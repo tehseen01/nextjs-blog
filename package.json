@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.2.0",
+    "@nextui-org/react": "^2.0.18",
     "@types/node": "20.4.10",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
@@ -17,14 +19,18 @@
     "bcryptjs": "^2.4.3",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.13",
+    "framer-motion": "^10.15.1",
     "jsonwebtoken": "^9.0.1",
+    "lucide-react": "^0.265.0",
     "mongoose": "^7.4.3",
     "next": "13.4.13",
     "nodemailer": "^6.9.4",
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.4",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "zod": "^3.21.4"
   }
 }
