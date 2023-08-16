@@ -1,6 +1,7 @@
 "use client";
 
 import NextLink from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Input, Button, Link } from "@nextui-org/react";
 
@@ -9,7 +10,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { signUpSchema, signUpSchemaType } from "@/lib/validation/signUpSchema";
 
+import axios from "axios";
+import toast from "react-hot-toast";
+
 const Page = () => {
+  const router = useRouter();
+
   const {
     register,
     reset,
@@ -21,9 +27,17 @@ const Page = () => {
 
   const onSubmitHandle: SubmitHandler<signUpSchemaType> = async (data) => {
     try {
-      console.log(data);
+      const res = await axios.post(`/api/auth/signup`, data);
+      toast.success(res.data.message);
       reset();
-    } catch (error) {
+
+      router.push("/");
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
       console.log(error);
     }
   };
@@ -43,6 +57,7 @@ const Page = () => {
         <form
           className="flex items-center flex-col gap-4"
           onSubmit={handleSubmit(onSubmitHandle)}
+          autoComplete="off"
         >
           <Input
             type="text"

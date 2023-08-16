@@ -1,13 +1,24 @@
 "use client";
 
-import { Button, Input, Link } from "@nextui-org/react";
 import React from "react";
+
+import { Button, Input, Link } from "@nextui-org/react";
+
 import NextLink from "next/link";
+import { useRouter } from "next/navigation";
+
 import { useForm, SubmitHandler } from "react-hook-form";
-import { SignInSchemaType, signInSchema } from "@/lib/validation/signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { SignInSchemaType, signInSchema } from "@/lib/validation/signInSchema";
+
+import axios from "axios";
+
+import toast from "react-hot-toast";
+
 const Page = () => {
+  const router = useRouter();
+
   const {
     register,
     reset,
@@ -17,9 +28,18 @@ const Page = () => {
 
   const onSubmitHandle: SubmitHandler<SignInSchemaType> = async (data) => {
     try {
-      console.log(data);
+      const res = await axios.post("/api/auth/login", data);
+
+      toast.success(res.data.message);
       reset();
-    } catch (error) {
+
+      router.push("/");
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
       console.log(error);
     }
   };
