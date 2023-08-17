@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
   Input,
   Button,
-  Link,
   Navbar as NavbarContainer,
   NavbarBrand,
   NavbarContent,
@@ -15,12 +14,16 @@ import {
   Avatar,
   DropdownMenu,
   DropdownItem,
+  DropdownSection,
 } from "@nextui-org/react";
 import Icon from "./Icon";
+
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import axios from "axios";
 import { setAuthStatus } from "@/redux/authSlice";
-import toast from "react-hot-toast";
+
+import axios from "axios";
+
+import Link from "next/link";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -96,14 +99,18 @@ const Navbar = () => {
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">{user?.name}</p>
-                <p className="font-semibold">@{user?.username}</p>
-              </DropdownItem>
-              <DropdownItem key="dashboard">Dashboard</DropdownItem>
-              <DropdownItem key="create_post">Create post</DropdownItem>
-              <DropdownItem key="reading_list">Reading list</DropdownItem>
-              <DropdownItem key="setting">Setting</DropdownItem>
+              <DropdownSection aria-label="Profile" showDivider>
+                <DropdownItem key="profile" className="h-14 gap-2">
+                  <p className="font-semibold">{user?.name}</p>
+                  <p className="font-semibold">@{user?.username}</p>
+                </DropdownItem>
+              </DropdownSection>
+              <DropdownSection aria-label="Profile Links" showDivider>
+                <DropdownItem key="dashboard">Dashboard</DropdownItem>
+                <DropdownItem key="create_post">Create post</DropdownItem>
+                <DropdownItem key="reading_list">Reading list</DropdownItem>
+                <DropdownItem key="setting">Setting</DropdownItem>
+              </DropdownSection>
               <DropdownItem key="logout" color="danger" onClick={logoutHandle}>
                 Log Out
               </DropdownItem>
