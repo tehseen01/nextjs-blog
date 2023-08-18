@@ -1,9 +1,7 @@
 import { Providers } from "@/components/Providers";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
+import Analytics from "@/components/Analytics";
 
 export const metadata: Metadata = {
   title: "Next blog | Home",
@@ -17,6 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="light">
+      <Analytics />
       <body>
         <Providers>{children}</Providers>
       </body>
