@@ -1,14 +1,15 @@
 "use client";
 
+import RightAside from "@/components/RightAside";
 import SideNav from "@/components/SideNav";
 import PostCard from "@/components/posts/PostCard";
-import { Button, ButtonGroup } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 
 export default function Home() {
   return (
-    <div className="lg:p-6 md:p-4 py-2 bg-gray-100">
+    <div className="lg:p-6 md:p-4 py-2">
       <div className="grid grid-cols-sm md:grid-cols-md lg:grid-cols-lg gap-4">
-        <aside className="max-md:hidden">
+        <aside className="max-md:hidden relative">
           <SideNav />
         </aside>
         <main>
@@ -21,7 +22,7 @@ export default function Home() {
             <PostCard key={index} />
           ))}
         </main>
-        <aside className="border max-lg:hidden">Right aside</aside>
+        <RightAside />
       </div>
     </div>
   );

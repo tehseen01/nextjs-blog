@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
+    "@mdx-js/loader": "^2.3.0",
+    "@mdx-js/react": "^2.3.0",
+    "@next/mdx": "^13.4.19",
     "@nextui-org/react": "^2.0.18",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/jsonwebtoken": "^9.0.2",
