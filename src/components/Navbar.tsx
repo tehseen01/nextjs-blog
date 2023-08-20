@@ -26,10 +26,9 @@ import axios from "axios";
 import Link from "next/link";
 
 const Navbar = () => {
-  const dispatch = useAppDispatch();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const dispatch = useAppDispatch();
   const { authStatus, user } = useAppSelector((state) => state.auth);
 
   const logoutHandle = async () => {
@@ -88,6 +87,27 @@ const Navbar = () => {
       </NavbarContent>
       {authStatus ? (
         <NavbarContent as="div" justify="end">
+          <NavbarItem>
+            <Button
+              as={Link}
+              href={"/new"}
+              variant="ghost"
+              color="primary"
+              className="border-1.5"
+              radius="sm"
+            >
+              Write Post
+            </Button>
+          </NavbarItem>
+          <NavbarItem>
+            <Button as={Link} href={"/"} isIconOnly variant="light">
+              <Icon
+                name="bell"
+                strokeWidth={1.25}
+                className="hover:fill-black"
+              />
+            </Button>
+          </NavbarItem>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar
@@ -102,14 +122,24 @@ const Navbar = () => {
               <DropdownSection aria-label="Profile" showDivider>
                 <DropdownItem key="profile" className="h-14 gap-2">
                   <p className="font-semibold">{user?.name}</p>
-                  <p className="font-semibold">@{user?.username}</p>
+                  <p className="text-gray-400">@{user?.username}</p>
                 </DropdownItem>
               </DropdownSection>
               <DropdownSection aria-label="Profile Links" showDivider>
-                <DropdownItem key="dashboard">Dashboard</DropdownItem>
-                <DropdownItem key="create_post">Create post</DropdownItem>
-                <DropdownItem key="reading_list">Reading list</DropdownItem>
-                <DropdownItem key="setting">Setting</DropdownItem>
+                {profileLinks.map((dropdown) => (
+                  <DropdownItem
+                    key={dropdown.id}
+                    className="group"
+                    color="primary"
+                  >
+                    <Link
+                      href={dropdown.path}
+                      className="group-hover:underline"
+                    >
+                      {dropdown.label}
+                    </Link>
+                  </DropdownItem>
+                ))}
               </DropdownSection>
               <DropdownItem key="logout" color="danger" onClick={logoutHandle}>
                 Log Out
@@ -118,7 +148,20 @@ const Navbar = () => {
           </Dropdown>
         </NavbarContent>
       ) : (
-        <NavbarContent className="gap-4" justify="end">
+        <NavbarContent className="md:gap-4 gap-0" justify="end">
+          <NavbarItem className="md:hidden">
+            <Button
+              as={Link}
+              href={"#"}
+              variant="light"
+              color="default"
+              radius="sm"
+              isIconOnly
+            >
+              <Icon name="search" strokeWidth={1.25} />
+            </Button>
+          </NavbarItem>
+
           <NavbarItem>
             <Button
               as={Link}
@@ -151,3 +194,26 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const profileLinks = [
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    path: "/dashboard",
+  },
+  {
+    id: "create_post",
+    label: "Create post",
+    path: "/new",
+  },
+  {
+    id: "reading_list",
+    label: "Reading List",
+    path: "/reading_list",
+  },
+  {
+    id: "setting",
+    label: "Setting",
+    path: "/setting",
+  },
+];

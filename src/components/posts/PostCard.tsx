@@ -30,33 +30,37 @@ const PostCard = () => {
         </CardHeader>
         <CardBody className="py-0">
           <div className="flex items-center">
-            <h3 className="text-2xl font-bold">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem,
-              vitae!
-            </h3>
-            <figure className="max-md:hidden">
+            <div className="flex-[2]">
+              <h3 className="text-2xl font-bold">
+                <Link href={"#"} className="hover:text-primary">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Quidem, vitae!
+                </Link>
+              </h3>
+              <div className="pt-2">
+                <Button size="sm" variant="light">
+                  #Javascript
+                </Button>
+                <Button size="sm" variant="light">
+                  #React.js
+                </Button>
+                <Button size="sm" variant="light">
+                  #Next.js
+                </Button>
+                <Button size="sm" variant="light">
+                  #Typescript
+                </Button>
+              </div>
+            </div>
+            <figure className="max-md:hidden flex-1 w-full h-full">
               <Image
                 src={"/12.jpg"}
                 width={200}
                 height={200}
                 alt="about image"
-                className="rounded-md"
+                className="rounded-md object-cover w-full h-full"
               />
             </figure>
-          </div>
-          <div className="pt-2">
-            <Button size="sm" variant="light">
-              #Javascript
-            </Button>
-            <Button size="sm" variant="light">
-              #React.js
-            </Button>
-            <Button size="sm" variant="light">
-              #Next.js
-            </Button>
-            <Button size="sm" variant="light">
-              #Typescript
-            </Button>
           </div>
         </CardBody>
         <CardFooter className="justify-between">
