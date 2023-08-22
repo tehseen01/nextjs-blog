@@ -2,7 +2,6 @@
 
 import Editor from "@/components/Editor";
 import Icon from "@/components/Icon";
-import Preview from "@/components/Preview";
 import {
   Button,
   Divider,
@@ -62,19 +61,20 @@ const Page = () => {
             variant="light"
             color="primary"
             className="text-black"
-            onPress={onOpen}
+            onClick={onOpen}
           >
             <Icon name="x" />
           </Button>
         </NavbarContent>
       </Navbar>
       {/* ---EDITOR & PREVIEW--- */}
-      {isPreview ? <Preview /> : <Editor />}
+      <Editor isPreview={isPreview} />
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         radius="sm"
         backdrop="blur"
+        placement="center"
       >
         <ModalContent>
           {(onClose) => (

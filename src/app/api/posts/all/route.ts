@@ -1,6 +1,6 @@
 import { connect } from "@/config/dbConfig";
 import { getDataFromToken } from "@/helper/getDataFromToken";
-import User from "@/models/UserModel";
+import Post from "@/models/PostModel";
 import { NextRequest, NextResponse } from "next/server";
 
 connect();
@@ -8,10 +8,11 @@ connect();
 export async function GET(req: NextRequest) {
   try {
     const userID = await getDataFromToken(req);
-    const user = await User.findOne({ _id: userID }).select("-password");
 
-    return NextResponse.json(user, { status: 200 });
+    const post = await Post.find({ author: userID });
+
+    return NextResponse.json(post, { status: 200 });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
