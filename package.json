@@ -10,9 +10,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
-    "@mdx-js/loader": "^2.3.0",
-    "@mdx-js/react": "^2.3.0",
-    "@next/mdx": "^13.4.19",
     "@nextui-org/react": "^2.0.18",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/jsonwebtoken": "^9.0.2",
@@ -22,6 +19,8 @@
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
+    "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.13",
     "framer-motion": "^10.15.1",
@@ -35,6 +34,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.4",
     "react-hot-toast": "^2.4.1",
+    "react-markdown": "^8.0.7",
     "react-query": "^3.39.3",
     "react-redux": "^8.1.2",
     "tailwindcss": "3.3.3",
@@ -42,6 +42,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "@types/bcryptjs": "^2.4.2"
   }
 }

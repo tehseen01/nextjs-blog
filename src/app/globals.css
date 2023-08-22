@@ -1,3 +1,76 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --editor-content-h: 56px;
+  --editor-title-h: 80px;
+}
+
+@layer components {
+  .mdx-h1 {
+    @apply mt-2 scroll-m-20 text-4xl font-bold tracking-tight;
+  }
+  .mdx-h2 {
+    @apply mt-10 scroll-m-20 border-b pb-1 text-3xl font-semibold tracking-tight first:mt-0;
+  }
+  .mdx-h3 {
+    @apply mt-8 scroll-m-20 text-2xl font-semibold tracking-tight;
+  }
+  .mdx-h4 {
+    @apply mt-8 scroll-m-20 text-xl font-semibold tracking-tight;
+  }
+  .mdx-h5 {
+    @apply mt-8 scroll-m-20 text-lg font-semibold tracking-tight;
+  }
+  .mdx-h6 {
+    @apply mt-8 scroll-m-20 text-base font-semibold tracking-tight;
+  }
+  .mdx-a {
+    @apply font-medium underline underline-offset-4;
+  }
+  .mdx-p {
+    @apply leading-7 [&:not(:first-child)]:mt-6;
+  }
+  .mdx-ul {
+    @apply my-6 ml-6 list-disc;
+  }
+  .mdx-ol {
+    @apply my-6 ml-6 list-decimal;
+  }
+  .mdx-li {
+    @apply mt-2;
+  }
+  .mdx-blockquote {
+    @apply mt-6 border-l-2 pl-6 italic [&>*]:text-muted-foreground;
+  }
+
+  .mdx-img {
+    @apply rounded-md border;
+  }
+  .mdx-hr {
+    @apply my-4 md:my-8;
+  }
+
+  .mdx-div {
+    @apply my-6 w-full overflow-y-auto;
+  }
+  .mdx-table {
+    @apply w-full;
+  }
+  .mdx-tr {
+    @apply m-0 border-t p-0 even:bg-muted;
+  }
+  .mdx-th {
+    @apply border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
+  }
+  .mdx-td {
+    @apply border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right;
+  }
+  .mdx-pre {
+    @apply mb-4 mt-6 overflow-x-auto rounded-lg border bg-black py-4;
+  }
+  .mdx-code {
+    @apply relative rounded border px-[0.3rem] py-[0.2rem] font-mono text-sm;
+  }
+}
