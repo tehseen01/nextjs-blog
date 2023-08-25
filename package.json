@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "postinstall": "prisma generate",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
     "@nextui-org/react": "^2.0.18",
+    "@prisma/client": "^5.2.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "20.4.10",
@@ -26,7 +28,6 @@
     "framer-motion": "^10.15.1",
     "jsonwebtoken": "^9.0.1",
     "lucide-react": "^0.265.0",
-    "mongoose": "^7.4.3",
     "next": "13.4.13",
     "nodemailer": "^6.9.4",
     "postcss": "8.4.27",
@@ -37,12 +38,15 @@
     "react-markdown": "^8.0.7",
     "react-query": "^3.39.3",
     "react-redux": "^8.1.2",
+    "react-textarea-autosize": "^8.5.3",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",
-    "@types/bcryptjs": "^2.4.2"
+    "@types/bcryptjs": "^2.4.2",
+    "prisma": "^5.2.0",
+    "ts-node": "^10.9.1"
   }
 }

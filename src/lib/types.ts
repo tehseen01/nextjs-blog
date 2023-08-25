@@ -1,5 +1,5 @@
 export type TUser = {
-  _id: string;
+  id: string;
   name: string;
   username: string;
   email: string;
@@ -9,4 +9,16 @@ export type TUser = {
   followers: [];
   followings: [];
   followingTags: [];
+};
+
+export type TPost = {
+  id: string;
+  title: string;
+  content: string;
+  path: string;
+  author: TUser;
+  tags: string[];
+  comments: string[];
+  createdAt: Date;
+  updatedAt: Date;
 };

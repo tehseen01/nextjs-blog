@@ -12,19 +12,20 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import Icon from "../Icon";
+import { TPost } from "@/lib/types";
 
-const PostCard = () => {
+const PostCard = ({ post }: { post: TPost }) => {
   return (
     <article className="mb-2">
       <Card shadow="none" radius="sm" className="border">
         <CardHeader>
           <User
             as={Link}
-            href={"/"}
-            name="Jane Doe"
-            description="Product Designer"
+            href={post.author.username}
+            name={post.author.name}
+            description={"@" + post.author.username}
             avatarProps={{
-              src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+              src: `${post.author.avatar}`,
             }}
           />
         </CardHeader>
@@ -32,9 +33,11 @@ const PostCard = () => {
           <div className="flex items-center">
             <div className="flex-[2]">
               <h3 className="text-2xl font-bold">
-                <Link href={"#"} className="hover:text-primary">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Quidem, vitae!
+                <Link
+                  href={`/${post.author.username}/${post.path}`}
+                  className="hover:text-primary"
+                >
+                  {post.title}
                 </Link>
               </h3>
               <div className="pt-2">

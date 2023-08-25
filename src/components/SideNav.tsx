@@ -87,7 +87,7 @@ const SideNav = () => {
 
 export default SideNav;
 
-const navLinks = [
+export const navLinks = [
   {
     id: 1,
     label: "Home",

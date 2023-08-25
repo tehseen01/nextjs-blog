@@ -1,19 +1,17 @@
-import User from "@/models/UserModel";
-import { connect } from "@/config/dbConfig";
-
 import { NextRequest, NextResponse } from "next/server";
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-connect();
+import prisma from "@/lib/db";
+import { storeCookieToken } from "@/lib/storeCookieToken";
 
 export async function POST(req: NextRequest) {
   try {
     const reqBody = await req.json();
     const { email, password } = reqBody;
 
-    const user = await User.findOne({ email });
+    const user = await prisma.user.findUnique({ where: { email: email } });
 
     if (!user) {
       return NextResponse.json(
@@ -31,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     const tokenData = {
-      _id: user._id,
+      id: user.id,
       username: user.username,
       name: user.name,
       email: user.email,
