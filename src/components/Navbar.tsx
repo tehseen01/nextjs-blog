@@ -15,6 +15,8 @@ import {
   DropdownMenu,
   DropdownItem,
   DropdownSection,
+  NavbarMenu,
+  NavbarMenuItem,
 } from "@nextui-org/react";
 import Icon from "./Icon";
 
@@ -24,6 +26,7 @@ import { setAuthStatus } from "@/redux/authSlice";
 import axios from "axios";
 
 import Link from "next/link";
+import { navLinks } from "./SideNav";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -189,6 +192,21 @@ const Navbar = () => {
           </NavbarItem>
         </NavbarContent>
       )}
+      <NavbarMenu>
+        {navLinks.map((navMenu) => (
+          <NavbarMenuItem key={navMenu.id}>
+            <Button
+              href="/"
+              className="justify-start"
+              as={Link}
+              variant="light"
+              fullWidth
+            >
+              <span>{navMenu.label}</span>
+            </Button>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
     </NavbarContainer>
   );
 };

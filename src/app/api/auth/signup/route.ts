@@ -1,19 +1,20 @@
-import { connect } from "@/config/dbConfig";
-import User from "@/models/UserModel";
-
 import { NextRequest, NextResponse } from "next/server";
 
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
-
-connect();
+import prisma from "@/lib/db";
+import { storeCookieToken } from "@/lib/storeCookieToken";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const bodyData = await req.json();
     const { name, username, email, password } = bodyData;
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
 
     if (existingUser) {
       return NextResponse.json(
@@ -24,16 +25,17 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    const newUser = await User.create({
-      name,
-      username,
-      email,
-      password: hashedPassword,
+    const newUser = await prisma.user.create({
+      data: {
+        name,
+        username,
+        email,
+        password: hashedPassword,
+      },
     });
-    await newUser.save();
 
     const tokenData = {
-      _id: newUser._id,
+      id: newUser.id,
       name: newUser.name,
       username: newUser.username,
       email: newUser.email,

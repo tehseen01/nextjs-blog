@@ -1,10 +1,7 @@
-import { connect } from "@/config/dbConfig";
-import { getDataFromToken } from "@/helper/getDataFromToken";
-import { NextRequest, NextResponse } from "next/server";
-import Post from "@/models/PostModel";
-import User from "@/models/UserModel";
+import prisma from "@/lib/db";
+import { getDataFromToken } from "@/lib/getDataFromToken";
 
-connect();
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,21 +9,23 @@ export async function POST(req: NextRequest) {
 
     const { title, content } = await req.json();
 
-    const postObj = {
-      title,
-      content,
-      author: userID,
-    };
+    const makePath = title.split(" ").join("-");
 
-    const newPost = await Post.create(postObj);
-
-    const user = await User.findById(userID);
-
-    user.posts.push(newPost._id);
-    await user.save();
+    const newPost = await prisma.post.create({
+      data: {
+        title,
+        content,
+        path: makePath,
+        author: {
+          connect: {
+            id: userID,
+          },
+        },
+      },
+    });
 
     return NextResponse.json(
-      { success: true, message: "Post created successfully" },
+      { success: true, message: "Post created successfully", newPost },
       { status: 201 }
     );
   } catch (error: any) {

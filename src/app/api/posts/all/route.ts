@@ -1,15 +1,27 @@
-import { connect } from "@/config/dbConfig";
-import { getDataFromToken } from "@/helper/getDataFromToken";
-import Post from "@/models/PostModel";
-import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/db";
 
-connect();
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const userID = await getDataFromToken(req);
-
-    const post = await Post.find({ author: userID });
+    const post = await prisma.post.findMany({
+      select: {
+        id: true,
+        title: true,
+        path: true,
+        createdAt: true,
+        updatedAt: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            avatar: true,
+          },
+        },
+      },
+      take: 10,
+    });
 
     return NextResponse.json(post, { status: 200 });
   } catch (error: any) {
