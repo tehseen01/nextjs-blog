@@ -9,28 +9,28 @@
 
 @layer components {
   .mdx-h1 {
-    @apply mt-2 scroll-m-20 text-4xl font-bold tracking-tight;
+    @apply mt-2 scroll-m-20 lg:text-5xl md:text-4xl text-3xl sm:font-extrabold font-semibold  tracking-tight;
   }
-  .mdx-h2 {
-    @apply mt-10 scroll-m-20 border-b pb-1 text-3xl font-semibold tracking-tight first:mt-0;
+  .prose-h2 {
+    @apply text-3xl font-semibold tracking-tight my-3;
   }
   .mdx-h3 {
-    @apply mt-8 scroll-m-20 text-2xl font-semibold tracking-tight;
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
   }
   .mdx-h4 {
-    @apply mt-8 scroll-m-20 text-xl font-semibold tracking-tight;
+    @apply scroll-m-20 text-xl font-semibold tracking-tight;
   }
   .mdx-h5 {
-    @apply mt-8 scroll-m-20 text-lg font-semibold tracking-tight;
+    @apply scroll-m-20 text-lg font-semibold tracking-tight;
   }
   .mdx-h6 {
-    @apply mt-8 scroll-m-20 text-base font-semibold tracking-tight;
+    @apply scroll-m-20 text-base font-semibold tracking-tight;
   }
   .mdx-a {
-    @apply font-medium underline underline-offset-4;
+    @apply font-medium underline text-primary hover:text-primary-300;
   }
   .mdx-p {
-    @apply leading-7 [&:not(:first-child)]:mt-6;
+    @apply md:text-xl text-lg text-black mb-3;
   }
   .mdx-ul {
     @apply my-6 ml-6 list-disc;
@@ -42,11 +42,11 @@
     @apply mt-2;
   }
   .mdx-blockquote {
-    @apply mt-6 border-l-2 pl-6 italic [&>*]:text-muted-foreground;
+    @apply mt-6 border-l-2 pl-6 italic;
   }
 
   .mdx-img {
-    @apply rounded-md border;
+    @apply w-full;
   }
   .mdx-hr {
     @apply my-4 md:my-8;
@@ -59,13 +59,13 @@
     @apply w-full;
   }
   .mdx-tr {
-    @apply m-0 border-t p-0 even:bg-muted;
+    @apply m-0 border-t p-0;
   }
   .mdx-th {
-    @apply border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
+    @apply border px-4 py-2 text-left font-bold;
   }
   .mdx-td {
-    @apply border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right;
+    @apply border px-4 py-2 text-left;
   }
   .mdx-pre {
     @apply mb-4 mt-6 overflow-x-auto rounded-lg border bg-black py-4;

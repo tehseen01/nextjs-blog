@@ -8,7 +8,18 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
+import clsx from "clsx";
+
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import remarkToc from "remark-toc";
+import rehypeRaw from "rehype-raw";
+
+import TextareaAutosize from "react-textarea-autosize";
+import { articleStyle } from "./posts/PostArticle";
 
 type TForm = {
   title: string;
@@ -25,24 +36,6 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
 
   const dispatch = useAppDispatch();
   const { postContent, postTitle } = useAppSelector((state) => state.editor);
-
-  const handleTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch(setPostTitle(e.target.value));
-    const scrollHeight = e.currentTarget.scrollHeight;
-    document.documentElement.style.setProperty(
-      "--editor-title-h",
-      `${scrollHeight}px`
-    );
-  };
-
-  const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch(setPostContent(e.target.value));
-    const scrollHeight = e.currentTarget.scrollHeight;
-    document.documentElement.style.setProperty(
-      "--editor-content-h",
-      `${scrollHeight}px`
-    );
-  };
 
   useEffect(() => {
     if (errors.title) {
@@ -75,36 +68,44 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
     >
       <div className="md:h-[calc(100vh_-_140px)] h-[calc(100dvh_-_140px)] overflow-y-auto bg-white rounded-md border">
         {isPreview ? (
-          <article className="prose py-4 px-8 max-w-full">
+          <article className={clsx("prose py-4 px-8 max-w-full", articleStyle)}>
             {/* ---PREVIEW--- */}
             <h1>{postTitle}</h1>
-            <ReactMarkdown>{postContent}</ReactMarkdown>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm, remarkToc]}
+              rehypePlugins={[
+                rehypeHighlight,
+                rehypeSlug,
+                rehypeAutolinkHeadings,
+                rehypeRaw,
+              ]}
+            >
+              {postContent}
+            </ReactMarkdown>
           </article>
         ) : (
           <div className="h-full">
             <div className="py-4 px-8">
-              <textarea
+              <TextareaAutosize
                 {...register("title", { required: true })}
                 aria-label="Post Title"
                 placeholder="New post title here..."
                 className="lg:text-5xl md:text-4xl text-3xl leading-tight resize-none w-full md:font-extrabold font-bold outline-none placeholder:text-slate-900"
                 value={postTitle}
-                style={{ minHeight: `var(--editor-title-h)` }}
-                onChange={handleTitle}
+                onChange={(e) => dispatch(setPostTitle(e.target.value))}
               />
             </div>
             <div className="bg-gray-100 py-4 px-8 h-16">
               Buttons in progress...
             </div>
             <div className="py-4 px-8">
-              <textarea
+              <TextareaAutosize
                 aria-label="Post content"
                 {...register("content")}
                 placeholder="Write your post content here..."
                 className="resize-none w-full outline-none overflow-hidden font-mono text-lg"
-                style={{ minHeight: `var(--editor-content-h)` }}
                 value={postContent}
-                onChange={handleContent}
+                onChange={(e) => dispatch(setPostContent(e.target.value))}
               />
             </div>
           </div>
