@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const userID = await getDataFromToken(req);
-    const user = await prisma.user.findFirst({ where: { id: userID } });
+    const user = await prisma.user.findUnique({ where: { id: userID } });
 
     return NextResponse.json(user, { status: 200 });
   } catch (error: any) {

@@ -9,40 +9,21 @@ import {
   NavbarContent,
   NavbarItem,
   NavbarMenuToggle,
-  Dropdown,
-  DropdownTrigger,
-  Avatar,
-  DropdownMenu,
-  DropdownItem,
-  DropdownSection,
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/react";
 import Icon from "./Icon";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { setAuthStatus } from "@/redux/authSlice";
-
-import axios from "axios";
+import { useAppSelector } from "@/hooks/reduxHooks";
 
 import Link from "next/link";
 import { navLinks } from "./SideNav";
+import NavbarProfile from "./NavbarProfile";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const dispatch = useAppDispatch();
-  const { authStatus, user } = useAppSelector((state) => state.auth);
-
-  const logoutHandle = async () => {
-    try {
-      const { data } = await axios.get("/api/auth/logout");
-      console.log(data);
-      dispatch(setAuthStatus(false));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { authStatus } = useAppSelector((state) => state.auth);
 
   return (
     <NavbarContainer
@@ -70,6 +51,7 @@ const Navbar = () => {
             NB
           </Button>
         </NavbarBrand>
+        {/* ---SEARCH BAR--- */}
         <div className="max-md:hidden">
           <form>
             <Input
@@ -88,68 +70,9 @@ const Navbar = () => {
           </form>
         </div>
       </NavbarContent>
+      {/* ===AUTH USER ACCESS=== */}
       {authStatus ? (
-        <NavbarContent as="div" justify="end">
-          <NavbarItem>
-            <Button
-              as={Link}
-              href={"/new"}
-              variant="ghost"
-              color="primary"
-              className="border-1.5"
-              radius="sm"
-            >
-              Write Post
-            </Button>
-          </NavbarItem>
-          <NavbarItem>
-            <Button as={Link} href={"/"} isIconOnly variant="light">
-              <Icon
-                name="bell"
-                strokeWidth={1.25}
-                className="hover:fill-black"
-              />
-            </Button>
-          </NavbarItem>
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <Avatar
-                as="button"
-                className="transition-transform"
-                color="secondary"
-                name={user?.name}
-                src={user?.avatar}
-              />
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownSection aria-label="Profile" showDivider>
-                <DropdownItem key="profile" className="h-14 gap-2">
-                  <p className="font-semibold">{user?.name}</p>
-                  <p className="text-gray-400">@{user?.username}</p>
-                </DropdownItem>
-              </DropdownSection>
-              <DropdownSection aria-label="Profile Links" showDivider>
-                {profileLinks.map((dropdown) => (
-                  <DropdownItem
-                    key={dropdown.id}
-                    className="group"
-                    color="primary"
-                  >
-                    <Link
-                      href={dropdown.path}
-                      className="group-hover:underline"
-                    >
-                      {dropdown.label}
-                    </Link>
-                  </DropdownItem>
-                ))}
-              </DropdownSection>
-              <DropdownItem key="logout" color="danger" onClick={logoutHandle}>
-                Log Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </NavbarContent>
+        <NavbarProfile />
       ) : (
         <NavbarContent className="md:gap-4 gap-0" justify="end">
           <NavbarItem className="md:hidden">
@@ -212,26 +135,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-const profileLinks = [
-  {
-    id: "dashboard",
-    label: "Dashboard",
-    path: "/dashboard",
-  },
-  {
-    id: "create_post",
-    label: "Create post",
-    path: "/new",
-  },
-  {
-    id: "reading_list",
-    label: "Reading List",
-    path: "/reading_list",
-  },
-  {
-    id: "setting",
-    label: "Setting",
-    path: "/setting",
-  },
-];

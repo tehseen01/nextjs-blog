@@ -1,5 +1,7 @@
 "use client";
 
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { TUser } from "@/lib/types";
 import {
   Avatar,
   Button,
@@ -8,46 +10,68 @@ import {
   CardFooter,
   CardHeader,
 } from "@nextui-org/react";
+import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
-const UserProfileCard = () => {
+const UserProfileCard = ({ user }: { user: TUser }) => {
+  const router = useRouter();
+
   const [isFollowed, setIsFollowed] = useState(false);
+
+  const currentUser = useAppSelector((state) => state.auth);
+
+  const handleFollow = async () => {
+    try {
+      if (currentUser.authStatus) {
+        const { data } = await axios.post(`/api/users/follow`, {
+          userId: user.id,
+        });
+        console.log(data);
+        toast.success(data.message);
+      } else {
+        router.push("/signin");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
       <Card className="border" shadow="none" radius="sm">
         <CardHeader className="justify-between">
-          <Link href={"/"} className="flex gap-5">
-            <Avatar
-              isBordered
-              radius="full"
-              size="md"
-              src="https://i.pravatar.cc/150?u=a04258114e29026702d"
-            />
+          <Link href={`/${user.username}`} className="flex gap-5">
+            <Avatar isBordered radius="full" size="md" src={user.avatar} />
             <div className="flex flex-col gap-1 items-start justify-center">
               <h4 className="font-semibold leading-none text-default-800">
-                Zoey Lang
+                {user.name}
               </h4>
               <h5 className="text-small tracking-tight text-default-500">
-                @zoeylang
+                @{user.username}
               </h5>
             </div>
           </Link>
-          <Button
-            className={
-              isFollowed
-                ? "bg-transparent text-foreground border-default-200"
-                : ""
-            }
-            color="primary"
-            radius="sm"
-            size="sm"
-            variant={isFollowed ? "bordered" : "solid"}
-            onPress={() => setIsFollowed(!isFollowed)}
-          >
-            {isFollowed ? "Unfollow" : "Follow"}
-          </Button>
+          {currentUser.user && currentUser.user?.id === user.id ? (
+            <></>
+          ) : (
+            <Button
+              className={
+                isFollowed
+                  ? "bg-transparent text-foreground border-default-200"
+                  : ""
+              }
+              color="primary"
+              radius="sm"
+              size="sm"
+              variant={isFollowed ? "bordered" : "solid"}
+              onPress={handleFollow}
+            >
+              {isFollowed ? "Unfollow" : "Follow"}
+            </Button>
+          )}
         </CardHeader>
         <CardBody className="px-3 py-0 text-small text-default-500 overflow-hidden">
           <p>
@@ -61,14 +85,18 @@ const UserProfileCard = () => {
             </span>
           </span>
         </CardBody>
-        <CardFooter className="flex-col items-start">
-          <div className="">
-            <p className="font-semibold text-default-800">Education</p>
-            <p className=" text-default-500 text-small">Following</p>
+        <CardFooter className="gap-3">
+          <div className="flex gap-1">
+            <p className="font-semibold text-default-400 text-small">
+              {user.followingIDs.length}
+            </p>
+            <p className=" text-default-400 text-small">Following</p>
           </div>
-          <div className="">
-            <p className="font-semibold text-default-800">Joined</p>
-            <p className=" text-default-500 text-small">02-09-2023</p>
+          <div className="flex gap-1">
+            <p className="font-semibold text-default-400 text-small">
+              {user.followerIDs.length}
+            </p>
+            <p className="text-default-400 text-small">Followers</p>
           </div>
         </CardFooter>
       </Card>

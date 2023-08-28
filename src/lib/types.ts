@@ -6,9 +6,15 @@ export type TUser = {
   avatar: string;
   bio: string;
   posts: [];
-  followers: [];
-  followings: [];
+  follower: [];
+  followerIDs: string[];
+  following: [];
+  followingIDs: string[];
   followingTags: [];
+  isVerified: boolean;
+  isAdmin: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type TPost = {
@@ -21,4 +27,9 @@ export type TPost = {
   comments: string[];
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type TResponseMessage = {
+  success: boolean;
+  message: string;
 };

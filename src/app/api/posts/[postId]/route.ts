@@ -8,9 +8,11 @@ export async function GET(
   try {
     const post = await prisma.post.findFirst({
       where: { path: params.postId },
+      include: {
+        author: true,
+      },
     });
 
-    console.log(params);
     return NextResponse.json(post, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });

@@ -16,11 +16,7 @@ export async function POST(req: NextRequest) {
         title,
         content,
         path: makePath,
-        author: {
-          connect: {
-            id: userID,
-          },
-        },
+        authorId: userID,
       },
     });
 
@@ -29,6 +25,7 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
