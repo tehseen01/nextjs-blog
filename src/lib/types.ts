@@ -5,16 +5,16 @@ export type TUser = {
   email: string;
   avatar: string;
   bio: string;
-  posts: [];
+  posts: TPost[];
   follower: [];
   followerIDs: string[];
   following: [];
   followingIDs: string[];
   followingTags: [];
-  isVerified: boolean;
-  isAdmin: boolean;
+  site: string;
   createdAt: Date;
   updatedAt: Date;
+  comment: [];
 };
 
 export type TPost = {
@@ -32,4 +32,13 @@ export type TPost = {
 export type TResponseMessage = {
   success: boolean;
   message: string;
+};
+
+export type TError = {
+  message: string;
+  response: {
+    data: {
+      message: string;
+    };
+  };
 };

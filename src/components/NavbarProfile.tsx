@@ -72,9 +72,14 @@ const NavbarProfile = () => {
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownSection aria-label="Profile" showDivider>
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">{user?.name}</p>
-                <p className="text-gray-400">@{user?.username}</p>
+              <DropdownItem key="profile" className="h-14 gap-2 group">
+                <Link
+                  className="group-hover:underline"
+                  href={user ? user.username : "/"}
+                >
+                  <p className="font-semibold">{user?.name}</p>
+                  <p className="text-gray-400">@{user?.username}</p>
+                </Link>
               </DropdownItem>
             </DropdownSection>
             <DropdownSection aria-label="Profile Links" showDivider>

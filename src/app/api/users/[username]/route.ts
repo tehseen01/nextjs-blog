@@ -8,6 +8,37 @@ export async function GET(
   try {
     const user = await prisma.user.findFirst({
       where: { username: params.username },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        bio: true,
+        avatar: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+        followerIDs: true,
+        followingIDs: true,
+        comment: true,
+        followingTags: true,
+        posts: {
+          select: {
+            id: true,
+            title: true,
+            path: true,
+            createdAt: true,
+            updatedAt: true,
+            author: {
+              select: {
+                id: true,
+                name: true,
+                username: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!user) {

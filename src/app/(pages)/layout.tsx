@@ -2,6 +2,7 @@
 
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { setAuthStatus, setUser } from "@/redux/authSlice";
+import { useQuery } from "@tanstack/react-query";
 
 import axios from "axios";
 import React, { useEffect } from "react";
@@ -9,19 +10,20 @@ import React, { useEffect } from "react";
 const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const getUser = async () => {
+  const {} = useQuery(["me"], {
+    queryFn: async () => {
       try {
         const { data } = await axios.get("/api/users/me");
-        dispatch(setUser(data));
-        dispatch(setAuthStatus(true));
+        return data;
       } catch (error) {
         console.log(error);
       }
-    };
-
-    getUser();
-  }, [dispatch]);
+    },
+    onSuccess: (data) => {
+      dispatch(setUser(data));
+      dispatch(setAuthStatus(true));
+    },
+  });
 
   return <>{children}</>;
 };
