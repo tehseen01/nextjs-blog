@@ -1,22 +1,35 @@
 "use client";
 
 import Icon from "@/components/Icon";
+import PostCard from "@/components/posts/PostCard";
+import ProfileDetails from "@/components/profile/ProfileDetails";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { TUser } from "@/lib/types";
-import { Avatar, Button } from "@nextui-org/react";
 import axios from "axios";
+import clsx from "clsx";
 import React from "react";
-import { useQuery } from "react-query";
+import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 
 const Page = ({ params }: { params: { userId: string } }) => {
-  const { user, authStatus } = useAppSelector((state) => state.auth);
+  const { moreInfo } = useAppSelector((state) => state.user);
 
   const { data, isLoading } = useQuery(["user", params.userId], {
-    queryFn: async (): Promise<TUser> => {
-      const { data } = await axios.get(`/api/users/${params.userId}`);
-      console.log(data);
-      return data;
+    queryFn: async (): Promise<TUser | null> => {
+      try {
+        const { data } = await axios.get(`/api/users/${params.userId}`);
+        return data;
+      } catch (error: any) {
+        console.log(error);
+        if (error.response.data) {
+          toast.error(error.response.statusText);
+          return null;
+        }
+        toast.error(error.message);
+        return null;
+      }
     },
+    retry: 1,
   });
 
   if (isLoading) {
@@ -30,35 +43,46 @@ const Page = ({ params }: { params: { userId: string } }) => {
   return (
     <>
       {data && Object.entries(data).length > 0 && (
-        <main className="p-4 md:w-4/5 w-11/12 m-auto">
-          <div className="pt-10">
-            <header className="w-full border rounded-md p-3">
-              <div className="flex items-center justify-center relative">
-                <Avatar
-                  src={data.avatar}
-                  className="absolute -top-10 h-20 w-20"
-                  name={data.name}
-                />
-              </div>
-              <div className="flex flex-col justify-end gap-4">
-                {authStatus ? (
-                  <Button color="primary">Edit Profile</Button>
-                ) : (
-                  <>
-                    <Button color="primary">Follow</Button>
-                    <Button isIconOnly>
-                      <Icon name="dot" />
-                    </Button>
-                  </>
+        <main className="bg-neutral-100">
+          <ProfileDetails user={data} />
+          <section className="py-3 grid grid-cols-1 md:grid-cols-[250px_1fr] md:w-[80%] m-auto gap-4">
+            <aside>
+              <div
+                className={clsx(
+                  moreInfo ? "max-md:grid" : "max-md:hidden",
+                  "bg-white rounded-md p-4 md:grid gap-4 text-neutral-600"
                 )}
+              >
+                <div className="flex items-center gap-4">
+                  <span>
+                    <Icon strokeWidth={1.25} name="newspaper" />
+                  </span>
+                  <span>{data.posts.length} posts published</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span>
+                    <Icon strokeWidth={1.25} name="message-circle" />
+                  </span>
+                  <span>{data.comment.length} comments written </span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span>
+                    <Icon strokeWidth={1.25} name="hash" />
+                  </span>
+                  <span> {data.followingTags.length} tags followed</span>
+                </div>
               </div>
-              <div className="flex justify-center pt-4">
-                <h1 className="lg:text-5xl md:text-4xl text-3xl">
-                  {data.name}
-                </h1>
-              </div>
-            </header>
-          </div>
+            </aside>
+            <div>
+              {data.posts.length > 0 ? (
+                data.posts.map((post) => <PostCard post={post} key={post.id} />)
+              ) : (
+                <div className="p-4 rounded-md bg-white">
+                  @{data.username} has not published any post yet!
+                </div>
+              )}
+            </div>
+          </section>
         </main>
       )}
     </>

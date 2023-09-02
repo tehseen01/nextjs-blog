@@ -18,21 +18,20 @@ model User {
   password                  String
   avatar                    String?   @default("https://res.cloudinary.com/dayo1mpv0/image/upload/v1683686792/default/profile.jpg")
   bio                       String?   @default("")
+  site                      String    @default("")
   posts                     Post[]
   follower                  User[]    @relation("UserFollows", fields: [followerIDs], references: [id])
   followerIDs               String[]  @db.ObjectId
   following                 User[]    @relation("UserFollows", fields: [followingIDs], references: [id])
   followingIDs              String[]  @db.ObjectId
   followingTags             Tag[]     @relation
-  isVerified                Boolean?  @default(false)
-  isAdmin                   Boolean?  @default(false)
   forgotPasswordToken       String?
   forgotPasswordTokenExpiry DateTime?
   verifyToken               String?
   verifyTokenExpiry         DateTime?
   createdAt                 DateTime  @default(now())
   updatedAt                 DateTime  @updatedAt
-  Comment                   Comment[]
+  comment                   Comment[]
 }
 
 model Post {

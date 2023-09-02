@@ -19,7 +19,7 @@ const PostArticle = ({ post }: { post: TPost }) => {
           <User
             name={post.author.name}
             as={Link}
-            href={post.author.username}
+            href={`/${post.author.username}`}
             description={<>Posted on: {post.updatedAt}</>}
             avatarProps={{
               src: `${post.author.avatar}`,

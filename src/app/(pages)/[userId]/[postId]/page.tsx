@@ -4,7 +4,7 @@ import UserProfileCard from "@/components/posts/UserProfileCard";
 import { TPost } from "@/lib/types";
 import axios from "axios";
 import React from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 type TPostProp = {
   params: { postId: string };
