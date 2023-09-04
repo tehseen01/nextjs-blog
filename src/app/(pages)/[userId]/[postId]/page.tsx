@@ -11,7 +11,7 @@ type TPostProp = {
 };
 
 const Page = ({ params }: TPostProp) => {
-  const { data, isLoading } = useQuery(["post", params.postId], {
+  const { data, isLoading } = useQuery(["posts", "post"], {
     queryFn: async (): Promise<TPost> => {
       const { data } = await axios.get(`/api/posts/${params.postId}`);
       return data;
@@ -31,7 +31,7 @@ const Page = ({ params }: TPostProp) => {
       <section>
         {data && Object.entries(data).length > 0 && <PostArticle post={data} />}
       </section>
-      <aside className="">
+      <aside className="max-md:hidden">
         {data && Object.entries(data).length > 0 && (
           <UserProfileCard user={data.author} />
         )}

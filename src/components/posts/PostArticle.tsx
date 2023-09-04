@@ -1,26 +1,39 @@
 "use client";
 
 import { TPost } from "@/lib/types";
+
 import { User } from "@nextui-org/react";
+
 import Link from "next/link";
 import React from "react";
+
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkToc from "remark-toc";
+
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import remarkToc from "remark-toc";
+
+import Comments from "./Comments";
+
+import moment from "moment";
 
 const PostArticle = ({ post }: { post: TPost }) => {
   return (
-    <div>
-      <article className="">
+    <>
+      <article className="pb-4">
         <header>
           <User
             name={post.author.name}
             as={Link}
             href={`/${post.author.username}`}
-            description={<>Posted on: {post.updatedAt}</>}
+            description={
+              <>
+                Posted on:{" "}
+                {moment(post.updatedAt, moment.ISO_8601, "DDMMMYYYY").fromNow()}
+              </>
+            }
             avatarProps={{
               src: `${post.author.avatar}`,
             }}
@@ -43,7 +56,9 @@ const PostArticle = ({ post }: { post: TPost }) => {
           </ReactMarkdown>
         </div>
       </article>
-    </div>
+      <hr className="pb-8" />
+      <Comments />
+    </>
   );
 };
 
