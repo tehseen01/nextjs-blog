@@ -1,7 +1,7 @@
 "use client";
 
 import RightAside from "@/components/RightAside";
-import SideNav from "@/components/SideNav";
+import SideNav from "@/components/navbar/SideNav";
 import PostCard from "@/components/posts/PostCard";
 import { TPost } from "@/lib/types";
 import { Button, Skeleton } from "@nextui-org/react";
@@ -13,7 +13,7 @@ export default function Home() {
     queryKey: ["posts"],
     queryFn: async (): Promise<TPost[]> => {
       try {
-        const { data } = await axios.get("/api/posts/all");
+        const { data } = await axios.get("/api/posts");
         return data;
       } catch (error) {
         console.log(error);

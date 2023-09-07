@@ -24,9 +24,22 @@ export type TPost = {
   path: string;
   author: TUser;
   tags: string[];
-  comments: string[];
+  comments: TComment[];
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type TComment = {
+  id: string;
+  content: string;
+  author: TUser;
+  authorId: string;
+  post: TPost;
+  postId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  replies: TComment[];
+  repliyId: string;
 };
 
 export type TResponseMessage = {

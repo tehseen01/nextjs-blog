@@ -8,8 +8,47 @@ export async function GET(
   try {
     const post = await prisma.post.findFirst({
       where: { path: params.postId },
-      include: {
-        author: true,
+      select: {
+        id: true,
+        content: true,
+        createdAt: true,
+        updatedAt: true,
+        title: true,
+        image: true,
+        path: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            avatar: true,
+            bio: true,
+            followerIDs: true,
+            followingIDs: true,
+            site: true,
+          },
+        },
+        comments: {
+          take: 10,
+          orderBy: { createdAt: "desc" },
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            updatedAt: true,
+            repliyId: true,
+            author: {
+              select: {
+                id: true,
+                username: true,
+                avatar: true,
+                name: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
       },
     });
 

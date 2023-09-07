@@ -12,7 +12,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/react";
-import Icon from "./Icon";
+import Icon from "../Icon";
 
 import { useAppSelector } from "@/hooks/reduxHooks";
 
