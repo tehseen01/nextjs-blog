@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import React from "react";
-import Icon from "./Icon";
+import Icon from "../Icon";
 
 const SideNav = () => {
   return (

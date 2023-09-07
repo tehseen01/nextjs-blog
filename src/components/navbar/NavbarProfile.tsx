@@ -18,7 +18,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import React from "react";
-import Icon from "./Icon";
+import Icon from "../Icon";
 import Link from "next/link";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";

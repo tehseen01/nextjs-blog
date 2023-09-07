@@ -30,7 +30,8 @@ const PostArticle = ({ post }: { post: TPost }) => {
             href={`/${post.author.username}`}
             description={
               <>
-                Posted on:{" "}
+                Posted on: (
+                {moment(post.updatedAt, moment.ISO_8601).format("Do MMM")})
                 {moment(post.updatedAt, moment.ISO_8601, "DDMMMYYYY").fromNow()}
               </>
             }
@@ -57,7 +58,7 @@ const PostArticle = ({ post }: { post: TPost }) => {
         </div>
       </article>
       <hr className="pb-8" />
-      <Comments />
+      <Comments post={post} />
     </>
   );
 };

@@ -11,7 +11,8 @@ type TPostProp = {
 };
 
 const Page = ({ params }: TPostProp) => {
-  const { data, isLoading } = useQuery(["posts", "post"], {
+  const { data, isLoading } = useQuery({
+    queryKey: ["posts", params.postId],
     queryFn: async (): Promise<TPost> => {
       const { data } = await axios.get(`/api/posts/${params.postId}`);
       return data;
@@ -27,7 +28,7 @@ const Page = ({ params }: TPostProp) => {
   }
 
   return (
-    <main className="grid grid-cols-1 md:grid-cols-[1fr_350px] p-2 md:py-6 md:px-16 h-full gap-8">
+    <main className="grid grid-cols-1 md:grid-cols-[65%_35%] p-2 md:py-6 md:px-16 h-full gap-4">
       <section>
         {data && Object.entries(data).length > 0 && <PostArticle post={data} />}
       </section>
