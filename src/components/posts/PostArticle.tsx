@@ -15,7 +15,7 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
-import Comments from "./Comments";
+import Comments from "../comments/Comments";
 
 import moment from "moment";
 

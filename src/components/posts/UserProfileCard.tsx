@@ -1,7 +1,9 @@
 "use client";
 
 import { useAppSelector } from "@/hooks/reduxHooks";
+
 import { TUser } from "@/lib/types";
+
 import {
   Avatar,
   Button,
@@ -9,15 +11,19 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  useDisclosure,
 } from "@nextui-org/react";
+
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+
 import toast from "react-hot-toast";
 
+import AuthModal from "../AuthModal";
+
 const UserProfileCard = ({ user }: { user: TUser }) => {
-  const router = useRouter();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [isFollowed, setIsFollowed] = useState(false);
 
@@ -32,7 +38,7 @@ const UserProfileCard = ({ user }: { user: TUser }) => {
         console.log(data);
         toast.success(data.message);
       } else {
-        router.push("/signin");
+        onOpen();
       }
     } catch (error) {
       console.log(error);
@@ -100,6 +106,8 @@ const UserProfileCard = ({ user }: { user: TUser }) => {
           </div>
         </CardFooter>
       </Card>
+
+      <AuthModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </div>
   );
 };

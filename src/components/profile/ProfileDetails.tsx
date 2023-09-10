@@ -1,22 +1,25 @@
 "use client";
 
 import { TUser } from "@/lib/types";
-import { Avatar, Button } from "@nextui-org/react";
+import { Avatar, Button, useDisclosure } from "@nextui-org/react";
 import React from "react";
+
 import Icon from "../Icon";
+import AuthModal from "../AuthModal";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { formatDate } from "@/lib/utils";
 import { setMoreInfo } from "@/redux/userSlice";
-import { useRouter } from "next/navigation";
+
+import { formatDate } from "@/lib/utils";
+
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 const ProfileDetails = ({ user }: { user: TUser }) => {
-  const dispatch = useAppDispatch();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const currentUser = useAppSelector((state) => state.auth);
   const { moreInfo } = useAppSelector((state) => state.user);
@@ -45,7 +48,7 @@ const ProfileDetails = ({ user }: { user: TUser }) => {
     if (currentUser.authStatus) {
       mutate({ userId: user.id });
     } else {
-      router.push("/signin");
+      onOpen();
     }
   };
 
@@ -119,6 +122,8 @@ const ProfileDetails = ({ user }: { user: TUser }) => {
           </Button>
         )}
       </div>
+
+      <AuthModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </section>
   );
 };

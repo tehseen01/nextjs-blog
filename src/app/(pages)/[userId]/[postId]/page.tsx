@@ -11,13 +11,18 @@ type TPostProp = {
 };
 
 const Page = ({ params }: TPostProp) => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["posts", params.postId],
     queryFn: async (): Promise<TPost> => {
       const { data } = await axios.get(`/api/posts/${params.postId}`);
       return data;
     },
+    retry: 1,
   });
+
+  if (isError) {
+    throw new Error("Oops something went wrong.");
+  }
 
   if (isLoading) {
     return (

@@ -32,6 +32,7 @@ model User {
   createdAt                 DateTime  @default(now())
   updatedAt                 DateTime  @updatedAt
   comment                   Comment[]
+  replies                   Reply[]
 }
 
 model Post {
@@ -49,17 +50,26 @@ model Post {
 }
 
 model Comment {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   content   String
-  author    User      @relation(fields: [authorId], references: [id])
-  authorId  String    @db.ObjectId
-  post      Post      @relation(fields: [postId], references: [id])
-  postId    String    @db.ObjectId
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  replies   Comment?  @relation("replies", fields: [repliyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  repliyId  String?   @db.ObjectId
-  Comment   Comment[] @relation("replies")
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String   @db.ObjectId
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  replies   Reply[]
+}
+
+model Reply {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String   @db.ObjectId
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  commentId String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Tag {
