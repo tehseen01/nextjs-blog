@@ -27,6 +27,9 @@ export type TPost = {
   comments: TComment[];
   createdAt: Date;
   updatedAt: Date;
+  _count: {
+    comments: number;
+  };
 };
 
 export type TComment = {
@@ -38,8 +41,27 @@ export type TComment = {
   postId: string;
   createdAt: Date;
   updatedAt: Date;
-  replies: TComment[];
-  repliyId: string;
+  replies: TReply[];
+  _count: {
+    replies: number;
+  };
+};
+
+export type TReply = {
+  id: string;
+  content: string;
+  author: TUser;
+  authorId: string;
+  comment: TComment;
+  commentId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type TCommentReplyOption = {
+  data: TComment | TReply;
+  type: "comment" | "reply";
+  postPath: string;
 };
 
 export type TResponseMessage = {

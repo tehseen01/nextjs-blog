@@ -3,17 +3,7 @@
 import { useAppSelector } from "@/hooks/reduxHooks";
 
 import { TPost } from "@/lib/types";
-import {
-  Avatar,
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Textarea,
-  useDisclosure,
-} from "@nextui-org/react";
+import { Avatar, Button, Textarea, useDisclosure } from "@nextui-org/react";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -24,6 +14,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 import { SubmitHandler, useForm } from "react-hook-form";
+import AuthModal from "../AuthModal";
 
 type TFormState = {
   comment: string;
@@ -51,7 +42,7 @@ const AddComment = ({ post }: { post: TPost }) => {
         postID: post.id,
       });
       toast.success(res.data.message);
-      queryClient.invalidateQueries(["posts", post.path]);
+      queryClient.invalidateQueries(["comments", post.path]);
 
       reset();
     } catch (error: any) {
@@ -66,58 +57,55 @@ const AddComment = ({ post }: { post: TPost }) => {
 
   return (
     <>
-      <div>
-        <h4 className="text-2xl font-bold pb-6">Top Comments</h4>
-        {user && Object.entries(user).length > 0 ? (
-          <div className="flex md:gap-4 gap-2">
-            <Avatar
-              src={user?.avatar}
-              fallback={user?.name}
-              alt={user?.username}
-              as={Link}
-              href={`/${user.username}`}
-              className="w-8 h-8 md:w-10 md:h-10"
-            />
-            <form className="flex-1 " onSubmit={handleSubmit(onSubmit)}>
-              <Textarea
-                {...register("comment")}
-                variant="bordered"
-                placeholder="Add to the discussion"
-                className="text-base font-mono"
-                size="lg"
-                radius="sm"
-                onFocus={() => setIsFocused(true)}
-              />
-              <div>
-                {isFocused ? (
-                  <Button
-                    color="primary"
-                    radius="sm"
-                    isDisabled={!isDirty || isSubmitting || !isValid}
-                    type="submit"
-                  >
-                    {isSubmitting ? "Submitting..." : "Submit"}
-                  </Button>
-                ) : null}
-              </div>
-            </form>
-          </div>
-        ) : (
-          <div className="flex md:gap-4 gap-2">
-            <Avatar fallback={"TEN"} className="w-8 h-8 md:w-10 md:h-10" />
+      {user && Object.entries(user).length > 0 ? (
+        <div className="flex md:gap-4 gap-2">
+          <Avatar
+            src={user?.avatar}
+            fallback={user?.name}
+            alt={user?.username}
+            as={Link}
+            href={`/${user.username}`}
+            className="w-8 h-8 md:w-10 md:h-10"
+          />
+          <form className="flex-1 " onSubmit={handleSubmit(onSubmit)}>
             <Textarea
-              isReadOnly
-              variant="bordered"
+              {...register("comment")}
               placeholder="Add to the discussion"
-              className="flex-1"
+              className="text-base"
+              size="lg"
               radius="sm"
-              onClick={onOpen}
+              onFocus={() => setIsFocused(true)}
             />
-          </div>
-        )}
-      </div>
+            <div>
+              {isFocused ? (
+                <Button
+                  color="primary"
+                  radius="sm"
+                  isDisabled={!isDirty || isSubmitting || !isValid}
+                  type="submit"
+                >
+                  {isSubmitting ? "Submitting..." : "Submit"}
+                </Button>
+              ) : null}
+            </div>
+          </form>
+        </div>
+      ) : (
+        <div className="flex md:gap-4 gap-2">
+          <Avatar fallback={"TEN"} className="w-8 h-8 md:w-10 md:h-10" />
+          <Textarea
+            isReadOnly
+            variant="bordered"
+            placeholder="Add to the discussion"
+            className="flex-1"
+            radius="sm"
+            onClick={onOpen}
+          />
+        </div>
+      )}
 
-      <Modal isOpen={isOpen} placement="center" onOpenChange={onOpenChange}>
+      <AuthModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      {/* <Modal isOpen={isOpen} placement="center" onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -156,7 +144,7 @@ const AddComment = ({ post }: { post: TPost }) => {
             </>
           )}
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </>
   );
 };

@@ -20,6 +20,8 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
         console.log(error);
       }
     },
+    retry: 2,
+    refetchOnWindowFocus: false,
     onSuccess: (data) => {
       dispatch(setUser(data));
       dispatch(setAuthStatus(true));

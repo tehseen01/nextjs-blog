@@ -75,7 +75,7 @@ const NavbarProfile = () => {
               <DropdownItem key="profile" className="h-14 gap-2 group">
                 <Link
                   className="group-hover:underline"
-                  href={user ? user.username : "/"}
+                  href={user ? `/${user.username}` : "/"}
                 >
                   <p className="font-semibold">{user?.name}</p>
                   <p className="text-gray-400">@{user?.username}</p>
