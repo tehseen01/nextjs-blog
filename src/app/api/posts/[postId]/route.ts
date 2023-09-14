@@ -19,6 +19,14 @@ export async function GET(
             followerIDs: true,
             followingIDs: true,
             site: true,
+            posts: {
+              take: 4,
+              select: {
+                id: true,
+                path: true,
+                title: true,
+              },
+            },
           },
         },
         _count: { select: { comments: true } },

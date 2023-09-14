@@ -53,7 +53,7 @@ const Comments = ({ post }: { post: TPost }) => {
   };
 
   return (
-    <section className="">
+    <section className="" id="comments">
       {/* ===COMMENT INPUT BOX=== */}
       <h4 className="text-2xl font-bold pb-6">
         Top Comments: {post._count.comments}

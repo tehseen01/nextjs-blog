@@ -3,7 +3,7 @@ import { setPostContent, setPostTitle } from "@/redux/editorSlice";
 
 import { Button } from "@nextui-org/react";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -20,22 +20,31 @@ import rehypeRaw from "rehype-raw";
 
 import TextareaAutosize from "react-textarea-autosize";
 import { articleStyle } from "./posts/PostArticle";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import Icon from "./Icon";
 
 type TForm = {
   title: string;
   content: string;
+  image: Blob | MediaSource;
 };
 
 const Editor = ({ isPreview }: { isPreview: boolean }) => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     reset,
+    resetField,
     formState: { isSubmitting, errors, isDirty },
   } = useForm<TForm>();
 
   const dispatch = useAppDispatch();
   const { postContent, postTitle } = useAppSelector((state) => state.editor);
+
+  const [imageFile, setImageFile] = useState<string | null>(null);
 
   useEffect(() => {
     if (errors.title) {
@@ -45,12 +54,18 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
 
   const onSubmitHandler: SubmitHandler<TForm> = async (data) => {
     try {
-      const res = await axios.post("/api/posts", data);
+      const res = await axios.post("/api/posts", {
+        title: data.title,
+        content: data.content,
+        image: imageFile,
+      });
 
       toast.success(res.data.message);
+      router.push(
+        `/${res.data.newPost.author.username}/${res.data.newPost.path}`
+      );
       reset();
-
-      console.log(res.data);
+      setImageFile(null);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -58,6 +73,22 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
         toast.error(error.message);
       }
       console.log(error);
+    }
+  };
+
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      const Reader = new FileReader();
+
+      Reader.onload = () => {
+        if (Reader.readyState === 2) {
+          setImageFile(Reader.result as string);
+        }
+      };
+      if (file) {
+        Reader.readAsDataURL(file);
+      }
     }
   };
 
@@ -70,6 +101,17 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
         {isPreview ? (
           <article className={clsx("prose py-4 px-8 max-w-full", articleStyle)}>
             {/* ---PREVIEW--- */}
+            {imageFile && (
+              <figure className="w-full max-h-[350px] mb-4">
+                <Image
+                  src={imageFile}
+                  width={400}
+                  height={200}
+                  className="w-full h-full object-cover max-h-[350px]"
+                  alt={postTitle}
+                />
+              </figure>
+            )}
             <h1>{postTitle}</h1>
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkToc]}
@@ -86,6 +128,34 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
         ) : (
           <div className="h-full">
             <div className="py-4 px-8">
+              <div className="flex gap-8 ">
+                <input
+                  type="file"
+                  {...register("image")}
+                  onChange={handleImage}
+                />
+                {imageFile && (
+                  <figure className="relative">
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      variant="light"
+                      className="absolute -top-4 -right-4 text-red-500 "
+                      onClick={() => {
+                        setImageFile(null), resetField("image");
+                      }}
+                    >
+                      <Icon name="x" />
+                    </Button>
+                    <Image
+                      src={imageFile}
+                      width={100}
+                      height={100}
+                      alt="post image"
+                    />
+                  </figure>
+                )}
+              </div>
               <TextareaAutosize
                 {...register("title", { required: true })}
                 aria-label="Post Title"

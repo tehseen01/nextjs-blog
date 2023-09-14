@@ -1,15 +1,32 @@
+import cloudinary from "@/lib/config/cloudinary";
 import prisma from "@/lib/db";
 import { getDataFromToken } from "@/lib/getDataFromToken";
 
 import { NextRequest, NextResponse } from "next/server";
 
+//@description     Create a new post
+//@route           POST /api/posts
+//@access          protected
 export async function POST(req: NextRequest) {
   try {
     const userID = await getDataFromToken(req);
+    if (!userID) {
+      return NextResponse.json(
+        { success: false, message: "Please login first!" },
+        { status: 401 }
+      );
+    }
 
-    const { title, content } = await req.json();
+    const { title, content, image } = await req.json();
 
-    const makePath = title.split(" ").join("-");
+    const makePath = title.split(" ").join("-").toLowerCase();
+
+    let uploadedImage = null;
+    if (image !== null) {
+      uploadedImage = await cloudinary.uploader.upload(image, {
+        folder: "blog/articles",
+      });
+    }
 
     const newPost = await prisma.post.create({
       data: {
@@ -17,6 +34,17 @@ export async function POST(req: NextRequest) {
         content,
         path: makePath,
         authorId: userID,
+        image: image !== null ? uploadedImage.secure_url : null,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            avatar: true,
+          },
+        },
       },
     });
 
@@ -30,18 +58,16 @@ export async function POST(req: NextRequest) {
   }
 }
 
+//@description     Get all post for home feed
+//@route           GET /api/posts
+//@access          Not protected
 export async function GET(req: NextRequest) {
   try {
     const post = await prisma.post.findMany({
       orderBy: {
         createdAt: "desc",
       },
-      select: {
-        id: true,
-        title: true,
-        path: true,
-        createdAt: true,
-        updatedAt: true,
+      include: {
         author: {
           select: {
             id: true,
@@ -50,6 +76,7 @@ export async function GET(req: NextRequest) {
             avatar: true,
           },
         },
+        _count: { select: { comments: true } },
       },
       take: 10,
     });

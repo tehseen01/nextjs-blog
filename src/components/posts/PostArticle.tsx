@@ -18,22 +18,34 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import Comments from "../comments/Comments";
 
 import moment from "moment";
+import Image from "next/image";
 
 const PostArticle = ({ post }: { post: TPost }) => {
   return (
     <>
       <article className="pb-4">
         <header>
+          {post.image !== null && (
+            <figure className="w-full max-h-[350px] mb-4">
+              <Image
+                src={post.image}
+                width={400}
+                height={200}
+                className="w-full h-full object-cover max-h-[350px]"
+                alt={post.title}
+              />
+            </figure>
+          )}
           <User
             name={post.author.name}
             as={Link}
             href={`/${post.author.username}`}
             description={
-              <>
+              <div className="text-default-500">
                 Posted on: (
-                {moment(post.updatedAt, moment.ISO_8601).format("Do MMM")})
+                {moment(post.updatedAt, moment.ISO_8601).format("DD MMM")} ){" "}
                 {moment(post.updatedAt, moment.ISO_8601, "DDMMMYYYY").fromNow()}
-              </>
+              </div>
             }
             avatarProps={{
               src: `${post.author.avatar}`,

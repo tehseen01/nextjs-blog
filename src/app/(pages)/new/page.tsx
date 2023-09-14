@@ -17,9 +17,12 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Page = () => {
+  const router = useRouter();
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [isPreview, setIsPreview] = useState(false);
@@ -89,9 +92,10 @@ const Page = () => {
                 <Button
                   color="danger"
                   radius="sm"
-                  onPress={onClose}
-                  as={Link}
-                  href="/"
+                  onPress={() => {
+                    onClose();
+                    router.back();
+                  }}
                   className="hover:opacity-100 opacity-80"
                 >
                   Yes, Leave the page
