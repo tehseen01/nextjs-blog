@@ -22,12 +22,11 @@ export async function GET(
         comment: true,
         followingTags: true,
         posts: {
-          select: {
-            id: true,
-            title: true,
-            path: true,
-            createdAt: true,
-            updatedAt: true,
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            _count: { select: { comments: true } },
             author: {
               select: {
                 id: true,

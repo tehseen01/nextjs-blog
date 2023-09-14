@@ -20,6 +20,7 @@ export type TUser = {
 export type TPost = {
   id: string;
   title: string;
+  image: string;
   content: string;
   path: string;
   author: TUser;

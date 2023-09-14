@@ -72,7 +72,11 @@ const NavbarProfile = () => {
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownSection aria-label="Profile" showDivider>
-              <DropdownItem key="profile" className="h-14 gap-2 group">
+              <DropdownItem
+                key="profile"
+                className="h-14 gap-2 group"
+                textValue={user?.username}
+              >
                 <Link
                   className="group-hover:underline"
                   href={user ? `/${user.username}` : "/"}
@@ -85,17 +89,26 @@ const NavbarProfile = () => {
             <DropdownSection aria-label="Profile Links" showDivider>
               {profileLinks.map((dropdown) => (
                 <DropdownItem
+                  textValue={dropdown.label}
                   key={dropdown.id}
                   className="group"
                   color="primary"
                 >
-                  <Link href={dropdown.path} className="group-hover:underline">
+                  <Link
+                    href={`${dropdown.path}`}
+                    className="group-hover:underline"
+                  >
                     {dropdown.label}
                   </Link>
                 </DropdownItem>
               ))}
             </DropdownSection>
-            <DropdownItem key="logout" color="danger" onClick={onOpen}>
+            <DropdownItem
+              key="logout"
+              color="danger"
+              onClick={onOpen}
+              textValue="log out"
+            >
               Log Out
             </DropdownItem>
           </DropdownMenu>

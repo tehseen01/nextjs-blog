@@ -55,26 +55,34 @@ const PostCard = ({ post }: { post: TPost }) => {
                 </Button>
               </div>
             </div>
-            <figure className="max-md:hidden flex-1 w-full h-full">
-              <Image
-                src={"/12.jpg"}
-                width={200}
-                height={200}
-                alt="about image"
-                className="rounded-md object-cover w-full h-full"
-              />
-            </figure>
+            {post.image !== null && (
+              <figure className="max-md:hidden flex-1 w-full h-full">
+                <Image
+                  src={post.image}
+                  width={200}
+                  height={200}
+                  alt="about image"
+                  className="rounded-md object-cover w-full h-full"
+                />
+              </figure>
+            )}
           </div>
         </CardBody>
         <CardFooter className="justify-between">
           <div className="flex items-center gap-4">
             <div>5 Reacts</div>
-            <div className="flex items-center gap-2">
+            <Button
+              className="flex items-center gap-2"
+              variant="light"
+              as={Link}
+              href={`/${post.author.username}/${post.path}#comments`}
+            >
               <Icon name="message-circle" strokeWidth={1.25} />
               <span>
-                2 <span className="max-sm:hidden">Comments</span>
+                {post._count.comments}{" "}
+                <span className="max-sm:hidden">Comments</span>
               </span>
-            </div>
+            </Button>
           </div>
           <div>
             <Button variant="light" isIconOnly>
