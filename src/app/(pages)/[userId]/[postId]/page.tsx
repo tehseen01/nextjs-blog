@@ -53,7 +53,7 @@ const Page = ({ params }: TPostProp) => {
         <aside className="">
           {data && Object.entries(data).length > 0 && (
             <>
-              <UserProfileCard user={data.author} />
+              <UserProfileCard post={data} />
               <Card className="border mt-8" shadow="none" radius="sm">
                 <CardHeader>
                   <h3 className="text-xl font-bold">

@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
         path: makePath,
         authorId: userID,
         image: image !== null ? uploadedImage.secure_url : null,
+        type: "PUBLISHED",
       },
       include: {
         author: {

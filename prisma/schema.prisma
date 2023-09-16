@@ -35,6 +35,11 @@ model User {
   replies                   Reply[]
 }
 
+enum PostType {
+  DRAFT
+  PUBLISHED
+}
+
 model Post {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   title     String
@@ -46,6 +51,7 @@ model Post {
   tags      Tag[]     @relation
   comments  Comment[]
   views     Int       @default(0)
+  type      PostType
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
