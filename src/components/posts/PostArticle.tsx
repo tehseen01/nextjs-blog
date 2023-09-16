@@ -4,6 +4,7 @@ import { TPost } from "@/lib/types";
 
 import {
   Button,
+  ButtonGroup,
   Modal,
   ModalBody,
   ModalContent,
@@ -98,19 +99,14 @@ const PostArticle = ({ post }: { post: TPost }) => {
               className=""
             />
             {user && user.id === post.author.id ? (
-              <div>
-                <Button variant="light" className="mr-2" size="sm">
+              <ButtonGroup radius="sm">
+                <Button className="" size="sm">
                   Edit
                 </Button>
-                <Button
-                  variant="light"
-                  color="danger"
-                  size="sm"
-                  onClick={onOpen}
-                >
+                <Button color="danger" size="sm" onClick={onOpen}>
                   Delete
                 </Button>
-              </div>
+              </ButtonGroup>
             ) : null}
           </div>
           <h1 className="mb-6 mt-4 scroll-m-20 lg:text-5xl md:text-4xl text-3xl sm:font-extrabold font-bold tracking-tight">

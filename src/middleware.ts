@@ -5,11 +5,11 @@ export function middleware(request: NextRequest) {
 
   const token = request.cookies.get("token")?.value || "";
 
-  if (!token && path === "/new") {
+  if (!token && (path === "/new" || path === "/dashboard")) {
     return NextResponse.redirect(new URL("/signin", request.nextUrl));
   }
 }
 
 export const config = {
-  matcher: ["/", "/signin", "/signup", "/new"],
+  matcher: ["/", "/signin", "/signup", "/new", "/dashboard"],
 };

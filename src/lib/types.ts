@@ -78,3 +78,42 @@ export type TError = {
     };
   };
 };
+
+export enum PostType {
+  DRAFT,
+  PUBLISHED,
+}
+
+type TReplyCountDashboard = {
+  _count: {
+    replies: number;
+  };
+};
+
+type TPostDashboard = {
+  id: string;
+  path: string;
+  title: string;
+  views: number;
+  type: PostType;
+  createdAt: Date;
+  comments: TReplyCountDashboard[];
+  _count: {
+    comments: number;
+  };
+};
+export type TDashboard = {
+  id: string;
+  avatar: string;
+  name: string;
+  username: string;
+  posts: TPostDashboard[];
+  _count: {
+    follower: number;
+    comment: number;
+    following: number;
+    followingTags: number;
+    posts: number;
+    replies: number;
+  };
+};
