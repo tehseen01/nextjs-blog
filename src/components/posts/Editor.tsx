@@ -1,5 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { setPostContent, setPostTitle } from "@/redux/editorSlice";
+"use client";
 
 import { Button } from "@nextui-org/react";
 
@@ -19,15 +18,16 @@ import remarkToc from "remark-toc";
 import rehypeRaw from "rehype-raw";
 
 import TextareaAutosize from "react-textarea-autosize";
-import { articleStyle } from "./posts/PostArticle";
+import { articleStyle } from "./PostArticle";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Icon from "./Icon";
+import Icon from "../Icon";
 
 type TForm = {
   title: string;
   content: string;
   image: Blob | MediaSource;
+  postType: "DRAFT" | "PUBLISHED";
 };
 
 const Editor = ({ isPreview }: { isPreview: boolean }) => {
@@ -38,11 +38,13 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
     handleSubmit,
     reset,
     resetField,
-    formState: { isSubmitting, errors, isDirty },
+    setValue,
+    watch,
+    formState: { isSubmitting, errors },
   } = useForm<TForm>();
-
-  const dispatch = useAppDispatch();
-  const { postContent, postTitle } = useAppSelector((state) => state.editor);
+  const postType = watch("postType");
+  const postTitle = watch("title");
+  const postContent = watch("content");
 
   const [imageFile, setImageFile] = useState<string | null>(null);
 
@@ -58,14 +60,19 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
         title: data.title,
         content: data.content,
         image: imageFile,
+        type: data.postType,
       });
 
       toast.success(res.data.message);
-      router.push(
-        `/${res.data.newPost.author.username}/${res.data.newPost.path}`
-      );
       reset();
       setImageFile(null);
+      if (data.postType === "DRAFT") {
+        router.push(`/dashboard`);
+      } else {
+        router.push(
+          `/${res.data.newPost.author.username}/${res.data.newPost.path}`
+        );
+      }
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -161,8 +168,6 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
                 aria-label="Post Title"
                 placeholder="New post title here..."
                 className="lg:text-5xl md:text-4xl text-3xl leading-tight resize-none w-full md:font-extrabold font-bold outline-none placeholder:text-slate-900"
-                value={postTitle}
-                onChange={(e) => dispatch(setPostTitle(e.target.value))}
               />
             </div>
             <div className="bg-gray-100 py-4 px-8 h-16">
@@ -174,8 +179,6 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
                 {...register("content")}
                 placeholder="Write your post content here..."
                 className="resize-none w-full outline-none overflow-hidden font-mono text-lg"
-                value={postContent}
-                onChange={(e) => dispatch(setPostContent(e.target.value))}
               />
             </div>
           </div>
@@ -186,13 +189,24 @@ const Editor = ({ isPreview }: { isPreview: boolean }) => {
           color="primary"
           radius="sm"
           type="submit"
-          isDisabled={isSubmitting ? true : false}
-          isLoading={isSubmitting ? true : false}
+          isDisabled={postType === "PUBLISHED" && isSubmitting ? true : false}
+          isLoading={postType === "PUBLISHED" && isSubmitting ? true : false}
+          onClick={() => setValue("postType", "PUBLISHED")}
         >
-          {isSubmitting ? "publishing..." : "Publish"}
+          {postType === "PUBLISHED" && isSubmitting
+            ? "publishing..."
+            : "Publish"}
         </Button>
-        <Button variant="light" color="primary" radius="sm">
-          Save Draft
+        <Button
+          variant="light"
+          color="primary"
+          radius="sm"
+          type="submit"
+          isDisabled={postType === "DRAFT" && isSubmitting ? true : false}
+          isLoading={postType === "DRAFT" && isSubmitting ? true : false}
+          onClick={() => setValue("postType", "DRAFT")}
+        >
+          {postType === "DRAFT" && isSubmitting ? "Saving..." : "Save Draft"}
         </Button>
       </div>
     </form>
