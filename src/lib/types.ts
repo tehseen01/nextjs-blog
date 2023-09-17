@@ -79,10 +79,7 @@ export type TError = {
   };
 };
 
-export enum PostType {
-  DRAFT,
-  PUBLISHED,
-}
+export type PostType = "DRAFT" | "PUBLISHED";
 
 type TReplyCountDashboard = {
   _count: {
@@ -116,4 +113,16 @@ export type TDashboard = {
     posts: number;
     replies: number;
   };
+};
+
+export type TTags = {
+  id: string;
+  label: string;
+  value: string;
+  description: string;
+  color: string;
+  User: TUser;
+  userId: string;
+  Post: TPost;
+  postId: string;
 };

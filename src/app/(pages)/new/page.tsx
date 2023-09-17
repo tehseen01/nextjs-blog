@@ -1,6 +1,6 @@
 "use client";
 
-import Editor from "@/components/Editor";
+import Editor from "@/components/posts/Editor";
 import Icon from "@/components/Icon";
 import {
   Button,

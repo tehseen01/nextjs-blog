@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { title, content, image } = await req.json();
+    const { title, content, image, type } = await req.json();
 
     const makePath = title.split(" ").join("-").toLowerCase();
 
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
         path: makePath,
         authorId: userID,
         image: image !== null ? uploadedImage.secure_url : null,
-        type: "PUBLISHED",
+        type,
       },
       include: {
         author: {

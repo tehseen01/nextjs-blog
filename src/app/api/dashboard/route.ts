@@ -7,6 +7,8 @@ import { NextRequest, NextResponse } from "next/server";
 //@access          protected
 export async function GET(req: NextRequest) {
   try {
+    const postFilter = req.nextUrl.searchParams.get("filter");
+
     const userID = await getDataFromToken(req);
     if (!userID) {
       return NextResponse.json(
@@ -23,6 +25,23 @@ export async function GET(req: NextRequest) {
         name: true,
         username: true,
         posts: {
+          orderBy: (() => {
+            switch (postFilter) {
+              case "recently_created":
+                return { createdAt: "desc" };
+              case "most_views":
+                return { views: "desc" };
+              default:
+                return { createdAt: "desc" };
+            }
+          })(),
+          where: (() => {
+            if (postFilter === "DRAFT" || postFilter === "PUBLISHED") {
+              return { type: postFilter };
+            } else {
+              return {};
+            }
+          })(),
           select: {
             id: true,
             title: true,
