@@ -10,11 +10,11 @@ import AuthModal from "../AuthModal";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { setMoreInfo } from "@/redux/userSlice";
 
-import { formatDate } from "@/lib/utils";
-
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import moment from "moment";
+import Link from "next/link";
 
 const ProfileDetails = ({ user }: { user: TUser }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -63,7 +63,7 @@ const ProfileDetails = ({ user }: { user: TUser }) => {
           />
           <div className="flex flex-col justify-end gap-4">
             {currentUser.user?.id === user.id ? (
-              <Button color="primary" radius="sm">
+              <Button color="primary" radius="sm" as={Link} href="/setting">
                 Edit Profile
               </Button>
             ) : (
@@ -85,11 +85,7 @@ const ProfileDetails = ({ user }: { user: TUser }) => {
             {user.name}
           </h1>
           <p>@{user.username}</p>
-          <p className="text-lg py-2">
-            {user.bio
-              ? user.bio
-              : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde, a. Tenetur, odit atque?"}
-          </p>
+          <p className="text-lg py-2">{user.bio}</p>
           <div className="flex gap-4 py-2">
             <div className="flex gap-1">
               <p className="font-semibold text-default-500 text-small">
@@ -106,7 +102,9 @@ const ProfileDetails = ({ user }: { user: TUser }) => {
           </div>
           <div className="text-small text-default-500 py-2 flex gap-3 items-center">
             <Icon name="cake" />
-            <span>joined on {formatDate(user.createdAt)}</span>
+            <span>
+              joined on {moment(user.createdAt, moment.ISO_8601).format("l")}
+            </span>
           </div>
         </div>
         {moreInfo ? null : (

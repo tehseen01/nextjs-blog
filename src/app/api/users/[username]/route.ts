@@ -25,6 +25,7 @@ export async function GET(
           orderBy: {
             createdAt: "desc",
           },
+          where: { NOT: { type: "DRAFT" } },
           include: {
             _count: { select: { comments: true } },
             author: {
