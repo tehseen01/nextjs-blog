@@ -54,12 +54,7 @@ const UserProfileCard = ({ post }: { post: TPost }) => {
       <Card className="border" shadow="none" radius="sm">
         <CardHeader className="justify-between">
           <Link href={`/${post.author.username}`} className="flex gap-5">
-            <Avatar
-              isBordered
-              radius="full"
-              size="md"
-              src={post.author.avatar}
-            />
+            <Avatar radius="full" size="md" src={post.author.avatar} />
             <div className="flex flex-col gap-1 items-start justify-center">
               <h4 className="font-semibold leading-none text-default-800">
                 {post.author.name}
@@ -81,7 +76,11 @@ const UserProfileCard = ({ post }: { post: TPost }) => {
               color="primary"
               radius="sm"
               size="sm"
-              variant={isFollowed ? "bordered" : "solid"}
+              variant={
+                user && post.author.followerIDs.includes(user.id)
+                  ? "bordered"
+                  : "solid"
+              }
               onPress={handleFollow}
             >
               {user && post.author.followerIDs.includes(user.id)
@@ -91,16 +90,14 @@ const UserProfileCard = ({ post }: { post: TPost }) => {
           )}
         </CardHeader>
         <CardBody className="px-3 py-0 text-small text-default-500 overflow-hidden">
-          <p>
-            Frontend developer and UI/UX enthusiast. Join me on this coding
-            adventure!
-          </p>
-          <span className="pt-2">
-            #FrontendWithZoey
-            <span className="py-2" aria-label="computer" role="img">
-              💻
-            </span>
-          </span>
+          <p>{post.author.bio}</p>
+          <Link
+            href={post.author.site}
+            target="_blank"
+            className="pt-2 text-primary-500 hover:text-primary-600"
+          >
+            {post.author.site}
+          </Link>
         </CardBody>
         <CardFooter className="gap-3">
           <div className="flex gap-1">

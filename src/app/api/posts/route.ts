@@ -1,6 +1,6 @@
 import cloudinary from "@/lib/config/cloudinary";
 import prisma from "@/lib/db";
-import { getDataFromToken } from "@/lib/getDataFromToken";
+import { getDataFromToken } from "@/utils/getDataFromToken";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -65,6 +65,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const post = await prisma.post.findMany({
+      where: { NOT: { type: "DRAFT" } },
       orderBy: {
         createdAt: "desc",
       },
