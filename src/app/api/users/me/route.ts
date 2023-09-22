@@ -7,6 +7,7 @@ import { deleteFileFromCloudinary } from "@/utils/deleteFileFromCloudinary";
 import { uploadImageToCloudinary } from "@/utils/uploadImageToCloudinary";
 
 import { Prisma } from "@prisma/client";
+import { getPublicIdCloudinary } from "@/utils/getPublicIdCloudinary";
 
 //@description     Get the current user
 //@route           GET /api/users/me
@@ -96,7 +97,7 @@ export async function PUT(req: NextRequest) {
       );
 
       if (user.avatar && !user.avatar.includes("default/profile.jpg")) {
-        const publicId = user.avatar.split("/").pop()?.split(".")[0];
+        const publicId = getPublicIdCloudinary(user.avatar);
         await deleteFileFromCloudinary(publicId!, "profiles");
       }
 

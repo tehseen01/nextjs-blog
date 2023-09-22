@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import prisma from "@/lib/db";
-import { storeCookieToken } from "@/lib/storeCookieToken";
 
 export async function POST(req: NextRequest) {
   try {

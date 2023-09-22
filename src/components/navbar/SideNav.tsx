@@ -10,7 +10,7 @@ const SideNav = () => {
         {navLinks.map((link) => (
           <li key={link.id}>
             <Button
-              href="/"
+              href={link.path ? `${link.path}` : "/"}
               className="justify-start text-black hover:underline hover:text-primary group"
               as={Link}
               variant="light"
@@ -31,11 +31,7 @@ const SideNav = () => {
             color="primary"
             className="text-black group"
           >
-            <Icon
-              name="github"
-              strokeWidth={1.25}
-              className="group-hover:fill-black"
-            />
+            <Icon name="github" strokeWidth={1.25} />
           </Button>
         </li>
         <li>
@@ -45,11 +41,7 @@ const SideNav = () => {
             color="primary"
             className="text-black group"
           >
-            <Icon
-              name="twitter"
-              strokeWidth={1.25}
-              className="group-hover:fill-black"
-            />
+            <Icon name="twitter" strokeWidth={1.25} />
           </Button>
         </li>
         <li>
@@ -59,11 +51,7 @@ const SideNav = () => {
             color="primary"
             className="text-black group"
           >
-            <Icon
-              name="linkedin"
-              strokeWidth={1.25}
-              className="group-hover:fill-black"
-            />
+            <Icon name="linkedin" strokeWidth={1.25} />
           </Button>
         </li>
         <li>
@@ -73,11 +61,7 @@ const SideNav = () => {
             color="primary"
             className="text-black group"
           >
-            <Icon
-              name="instagram"
-              strokeWidth={1.25}
-              className="group-hover:fill-black"
-            />
+            <Icon name="instagram" strokeWidth={1.25} />
           </Button>
         </li>
       </ul>
@@ -91,111 +75,53 @@ export const navLinks = [
   {
     id: 1,
     label: "Home",
-    icon: (
-      <Icon
-        name="home"
-        strokeWidth={1.25}
-        className="group-hover:fill-primary"
-      />
-    ),
+    path: "/",
+    icon: <Icon name="home" strokeWidth={1.25} />,
   },
   {
     id: 2,
     label: "Reading List",
-    icon: (
-      <Icon
-        name="bookmark"
-        strokeWidth={1.25}
-        className="group-hover:fill-primary"
-      />
-    ),
+    icon: <Icon name="bookmark" strokeWidth={1.25} />,
   },
   {
     id: 3,
     label: "Listings",
-    icon: (
-      <Icon
-        name="scroll-text"
-        strokeWidth={1.25}
-        className="group-hover:fill-primary"
-      />
-    ),
+    icon: <Icon name="scroll-text" strokeWidth={1.25} />,
   },
   {
     id: 4,
     label: "Podcasts",
-    icon: (
-      <Icon
-        name="mic"
-        strokeWidth={1.25}
-        className="group-hover:fill-primary"
-      />
-    ),
+    icon: <Icon name="mic" strokeWidth={1.25} />,
   },
   {
     id: 5,
     label: "Videos",
-    icon: (
-      <Icon
-        name="youtube"
-        strokeWidth={1.25}
-        className="group-hover:fill-primary"
-      />
-    ),
+    icon: <Icon name="youtube" strokeWidth={1.25} />,
   },
   {
     id: 6,
     label: "Tags",
-    icon: (
-      <Icon
-        name="tag"
-        strokeWidth={1.25}
-        className="group-hover:fill-primary"
-      />
-    ),
+    path: "/tags",
+    icon: <Icon name="tag" strokeWidth={1.25} />,
   },
   {
     id: 7,
     label: "FAQ",
-    icon: (
-      <Icon
-        name="lightbulb"
-        strokeWidth={1.25}
-        className="group-hover:fill-primary"
-      />
-    ),
+    icon: <Icon name="lightbulb" strokeWidth={1.25} />,
   },
   {
     id: 9,
     label: "About",
-    icon: (
-      <Icon
-        name="user"
-        strokeWidth={1.25}
-        className="group-hover:fill-primary"
-      />
-    ),
+    icon: <Icon name="user" strokeWidth={1.25} />,
   },
   {
     id: 10,
     label: "Contact",
-    icon: (
-      <Icon
-        name="user-2"
-        strokeWidth={1.25}
-        className="group-hover:fill-primary"
-      />
-    ),
+    icon: <Icon name="contact" strokeWidth={1.25} />,
   },
   {
     id: 11,
     label: "Guides",
-    icon: (
-      <Icon
-        name="home"
-        strokeWidth={1.25}
-        className="group-hover:fill-primary"
-      />
-    ),
+    icon: <Icon name="book-open-check" strokeWidth={1.25} />,
   },
 ];

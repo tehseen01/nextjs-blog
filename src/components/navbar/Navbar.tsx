@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import {
-  Input,
   Button,
   Navbar as NavbarContainer,
   NavbarBrand,
@@ -19,6 +18,7 @@ import { useAppSelector } from "@/hooks/reduxHooks";
 import Link from "next/link";
 import { navLinks } from "./SideNav";
 import NavbarProfile from "./NavbarProfile";
+import SearchInput from "../search/SearchInput";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,6 +32,7 @@ const Navbar = () => {
       onMenuOpenChange={setIsMenuOpen}
       isMenuOpen={isMenuOpen}
       maxWidth="full"
+      classNames={{ wrapper: "max-md:px-2" }}
     >
       <NavbarContent>
         <NavbarMenuToggle
@@ -53,32 +54,18 @@ const Navbar = () => {
         </NavbarBrand>
         {/* ---SEARCH BAR--- */}
         <div className="max-md:hidden">
-          <form>
-            <Input
-              classNames={{
-                base: "h-10",
-                mainWrapper: "h-full",
-                input: "text-small",
-                inputWrapper:
-                  "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-              }}
-              placeholder="Type to search..."
-              size="sm"
-              startContent={<Icon name="search" />}
-              type="search"
-            />
-          </form>
+          <SearchInput />
         </div>
       </NavbarContent>
       {/* ===AUTH USER ACCESS=== */}
       {authStatus ? (
         <NavbarProfile />
       ) : (
-        <NavbarContent className="md:gap-4 gap-0" justify="end">
+        <NavbarContent className="md:gap-4 gap-2" justify="end">
           <NavbarItem className="md:hidden">
             <Button
               as={Link}
-              href={"#"}
+              href={"/search"}
               variant="light"
               color="default"
               radius="sm"

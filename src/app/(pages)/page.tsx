@@ -20,6 +20,7 @@ export default function Home() {
         return [];
       }
     },
+    refetchOnWindowFocus: false,
   });
 
   return (
