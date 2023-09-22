@@ -1,34 +1,17 @@
-"use client";
-
-import { useAppDispatch } from "@/hooks/reduxHooks";
-import { setAuthStatus, setUser } from "@/redux/authSlice";
-
-import { useQuery } from "@tanstack/react-query";
-
-import axios from "axios";
+import GetCurrentUser from "@/components/GetCurrentUser";
+import { cookies } from "next/headers";
 import React from "react";
 
 const HomeLayout = ({ children }: { children: React.ReactNode }) => {
-  const dispatch = useAppDispatch();
+  const cookiesList = cookies();
+  const token = cookiesList.has("token");
 
-  useQuery(["me"], {
-    queryFn: async () => {
-      try {
-        const { data } = await axios.get("/api/users/me");
-        return data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    retry: 2,
-    refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      dispatch(setUser(data));
-      dispatch(setAuthStatus(true));
-    },
-  });
-
-  return <>{children}</>;
+  return (
+    <>
+      {token && <GetCurrentUser />}
+      {children}
+    </>
+  );
 };
 
 export default HomeLayout;

@@ -43,7 +43,19 @@ const NavbarProfile = () => {
   return (
     <>
       <NavbarContent as="div" justify="end">
-        <NavbarItem className="group">
+        <NavbarItem className="md:hidden">
+          <Button
+            as={Link}
+            href={"/search"}
+            variant="light"
+            color="default"
+            radius="sm"
+            isIconOnly
+          >
+            <Icon name="search" strokeWidth={1.25} />
+          </Button>
+        </NavbarItem>
+        <NavbarItem className="group max-md:hidden">
           <Button
             as={Link}
             href={"/new"}

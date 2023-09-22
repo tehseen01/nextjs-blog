@@ -1,5 +1,7 @@
 import prisma from "@/lib/db";
+import { deleteFileFromCloudinary } from "@/utils/deleteFileFromCloudinary";
 import { getDataFromToken } from "@/utils/getDataFromToken";
+import { getPublicIdCloudinary } from "@/utils/getPublicIdCloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
 //@description     Get a single post
@@ -84,6 +86,11 @@ export async function DELETE(req: NextRequest) {
         { success: false, message: "Post not found!" },
         { status: 404 }
       );
+    }
+
+    if (post.image) {
+      const publicID = getPublicIdCloudinary(post.image);
+      await deleteFileFromCloudinary(publicID!, "articles");
     }
 
     const deleteToComment = await prisma.comment.findMany({
