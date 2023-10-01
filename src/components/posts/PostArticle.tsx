@@ -9,21 +9,17 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import remarkToc from "remark-toc";
-
-import rehypeHighlight from "rehype-highlight";
-import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-
 import Comments from "../comments/Comments";
+import Output from "editorjs-react-renderer";
 
 import moment from "moment";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import DeletePostModal from "./DeletePostModal";
+import { useRouter } from "next/navigation";
 
 const PostArticle = ({ post }: { post: TPost }) => {
+  const router = useRouter();
+
   const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
 
   const { user } = useAppSelector((state) => state.auth);
@@ -38,7 +34,7 @@ const PostArticle = ({ post }: { post: TPost }) => {
                 src={post.image}
                 width={400}
                 height={200}
-                className="w-full h-full object-cover max-h-[350px]"
+                className="w-full h-full object-cover max-h-[350px] md:aspect-[5/2] aspect-[4/2]"
                 alt={post.title}
               />
             </figure>
@@ -66,7 +62,13 @@ const PostArticle = ({ post }: { post: TPost }) => {
             />
             {user && user.id === post.author.id ? (
               <ButtonGroup radius="sm">
-                <Button className="" size="sm">
+                <Button
+                  className=""
+                  size="sm"
+                  onPress={() =>
+                    router.push(`/${post.author.username}/${post.path}/edit`)
+                  }
+                >
                   Edit
                 </Button>
                 <Button color="danger" size="sm" onClick={onOpen}>
@@ -79,17 +81,8 @@ const PostArticle = ({ post }: { post: TPost }) => {
             {post.title}
           </h1>
         </header>
-        <div className={articleStyle}>
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm, remarkToc]}
-            rehypePlugins={[
-              rehypeHighlight,
-              rehypeSlug,
-              rehypeAutolinkHeadings,
-            ]}
-          >
-            {post.content}
-          </ReactMarkdown>
+        <div className="prose">
+          <Output data={post.content} />
         </div>
       </article>
       <hr className="pb-8" />
@@ -108,6 +101,3 @@ const PostArticle = ({ post }: { post: TPost }) => {
 };
 
 export default PostArticle;
-
-export const articleStyle =
-  "prose max-w-full prose-h1:mdx-h1 prose-p:mdx-p prose-a:mdx-a prose-h2:mdx-h2 prose-h3:mdx-h3 prose-h4:mdx-h4 prose-h5:mdx-h5 prose-h6:mdx-h6 prose-blockquote:mdx-blockquote prose-img:mdx-img prose-div:mdx-div prose-hr:mdx-hr prose-table:mdx-table prose-tr:mdx-tr prose-th:mdx-th prose-ul:mdx-ul prose-li:mdx-li prose-ol:mdx-ol prose-td:mdx-td prose-pre:mdx-pre prose-code:mdx-code";

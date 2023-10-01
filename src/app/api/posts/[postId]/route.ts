@@ -3,6 +3,8 @@ import { deleteFileFromCloudinary } from "@/utils/deleteFileFromCloudinary";
 import { getDataFromToken } from "@/utils/getDataFromToken";
 import { getPublicIdCloudinary } from "@/utils/getPublicIdCloudinary";
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
+import { uploadImageToCloudinary } from "@/utils/uploadImageToCloudinary";
 
 //@description     Get a single post
 //@route           GET /api/posts/[post.path]
@@ -52,6 +54,80 @@ export async function GET(
     }
 
     return NextResponse.json(post, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}
+
+//@description     Update a single post
+//@route           PATCH /api/posts/[post.path]
+//@access          protected
+export async function PATCH(req: NextRequest) {
+  try {
+    const { title, content, image, userId, postId, type } = await req.json();
+
+    const userID = await getDataFromToken(req);
+    if (!userID) {
+      return NextResponse.json(
+        { success: false, message: "You are not authorize!" },
+        { status: 401 }
+      );
+    }
+
+    if (userID !== userId) {
+      return NextResponse.json(
+        { success: false, message: "UserId not match" },
+        { status: 404 }
+      );
+    }
+
+    const post = await prisma.post.findUnique({ where: { id: postId } });
+    if (!post || !postId) {
+      return NextResponse.json(
+        { success: false, message: "Invalid post ID!" },
+        { status: 404 }
+      );
+    }
+
+    const updatedData: Prisma.PostUpdateInput = {};
+
+    if (title !== post.title) {
+      updatedData.title = title;
+    }
+
+    if (content !== post.content) {
+      updatedData.content = content;
+    }
+
+    if (image !== post.image) {
+      if (post.image) {
+        const publicId = getPublicIdCloudinary(post.image);
+        await deleteFileFromCloudinary(publicId!, "articles");
+      }
+
+      if (image === null) {
+        updatedData.image = null;
+      } else {
+        const newImage = await uploadImageToCloudinary(image, "blog/articles");
+        updatedData.image = newImage.secure_url;
+      }
+    }
+
+    if (type !== post.type) {
+      updatedData.type = type;
+    }
+
+    if (Object.keys(updatedData).length > 0) {
+      await prisma.post.update({
+        where: { id: post.id },
+        data: updatedData,
+      });
+    }
+
+    return NextResponse.json(
+      { success: true, message: "Your post has updated successfully" },
+      { status: 201 }
+    );
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }

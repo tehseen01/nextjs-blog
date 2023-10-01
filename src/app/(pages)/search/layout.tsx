@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/components/Loading";
 import SearchInput from "@/components/search/SearchInput";
 
 import { useAppSelector } from "@/hooks/reduxHooks";
@@ -14,7 +15,7 @@ import {
 
 import { Button } from "@nextui-org/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 
 const SearchLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -85,7 +86,7 @@ const SearchLayout = ({ children }: { children: React.ReactNode }) => {
             )}
           </ul>
         </aside>
-        {children}
+        <Suspense fallback={<Loading />}>{children}</Suspense>
       </div>
     </main>
   );

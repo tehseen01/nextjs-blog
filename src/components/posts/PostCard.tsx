@@ -62,7 +62,7 @@ const PostCard = ({ post }: { post: TPost }) => {
                   width={200}
                   height={200}
                   alt="about image"
-                  className="rounded-md object-cover w-full h-full"
+                  className="rounded-md object-cover w-full h-full aspect-[4/2]"
                 />
               </figure>
             )}

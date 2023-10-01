@@ -1,10 +1,11 @@
 "use client";
 
 import Icon from "@/components/Icon";
+import Loading from "@/components/Loading";
 import { Button, Select, SelectItem } from "@nextui-org/react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 
 const SettingLayout = ({ children }: { children: React.ReactNode }) => {
   const params = useParams();
@@ -82,7 +83,7 @@ const SettingLayout = ({ children }: { children: React.ReactNode }) => {
           </Select>
         </div>
       </aside>
-      {children}
+      <Suspense fallback={<Loading />}>{children}</Suspense>
     </main>
   );
 };
