@@ -46,7 +46,7 @@ model Post {
   title     String
   path      String?
   image     String?
-  content   String?
+  content   Json?
   author    User      @relation(fields: [authorId], references: [id])
   authorId  String    @db.ObjectId
   tags      Tag[]     @relation(fields: [tagId], references: [id])

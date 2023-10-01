@@ -54,14 +54,6 @@ const SearchPage = () => {
     refetchOnWindowFocus: false,
   });
 
-  if (
-    defaultData.isLoading ||
-    searchResultQuery.isLoading ||
-    searchResultWithFilterQuery.isLoading
-  ) {
-    return <Loading />;
-  }
-
   return (
     <div>
       {!filter && !query ? (

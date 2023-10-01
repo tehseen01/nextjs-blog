@@ -19,6 +19,7 @@ import { TDashboard } from "@/lib/types";
 import moment from "moment";
 import { setFilterPost } from "@/redux/dashboardSlice";
 import { useAppDispatch } from "@/hooks/reduxHooks";
+import { useRouter } from "next/navigation";
 
 type TDeletePayloadProp = {
   path: string;
@@ -26,6 +27,8 @@ type TDeletePayloadProp = {
 };
 
 const DashboardPosts = ({ dashboardData }: { dashboardData: TDashboard }) => {
+  const router = useRouter();
+
   const dispatch = useAppDispatch();
 
   const [deletePostPayload, setDeletePostPayload] =
@@ -120,7 +123,15 @@ const DashboardPosts = ({ dashboardData }: { dashboardData: TDashboard }) => {
                   </div>
                 )}
                 <div className="justify-self-end">
-                  <Button size="sm" variant="light">
+                  <Button
+                    size="sm"
+                    variant="light"
+                    onPress={() =>
+                      router.push(
+                        `/${dashboardData.username}/${post.path}/edit`
+                      )
+                    }
+                  >
                     Edit
                   </Button>
                   <Button

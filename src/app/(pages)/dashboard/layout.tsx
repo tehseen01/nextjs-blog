@@ -1,10 +1,11 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import Count from "@/components/dashboard/Count";
 import DashboardFilter from "@/components/dashboard/Filter";
 
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const params = useParams();
@@ -17,7 +18,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <Count />
       <div className="grid lg:grid-cols-[250px_1fr] md:grid-cols-[200px_1fr] grid-cols-1 gap-4">
         <DashboardFilter />
-        {children}
+        <Suspense fallback={<Loading />}>{children}</Suspense>
       </div>
     </main>
   );

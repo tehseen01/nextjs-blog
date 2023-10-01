@@ -21,10 +21,11 @@ export type TPost = {
   id: string;
   title: string;
   image: string;
-  content: string;
+  content: any;
   path: string;
   author: TUser;
   tags: string[];
+  type: "PUBLISHED" | "DRAFT";
   comments: TComment[];
   createdAt: Date;
   updatedAt: Date;
