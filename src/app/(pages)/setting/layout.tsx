@@ -33,9 +33,9 @@ const SettingLayout = ({ children }: { children: React.ReactNode }) => {
               radius="sm"
               fullWidth
               variant={
-                params.settingRoute === link.value
+                settingParams === link.value
                   ? "flat"
-                  : !params.settingRoute && link.value === "profile"
+                  : !settingParams && link.value === "profile"
                   ? "flat"
                   : "light"
               }

@@ -42,6 +42,9 @@ const ProfileDetails = ({ user }: { user: TUser }) => {
       toast.success(data.message);
       queryClient.invalidateQueries(["me"]);
     },
+    onError: (error: any) => {
+      toast.error(error.message);
+    },
   });
 
   const handleFollow = () => {
