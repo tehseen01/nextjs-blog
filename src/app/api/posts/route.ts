@@ -64,7 +64,18 @@ export async function POST(req: NextRequest) {
 //@access          Not protected
 export async function GET(req: NextRequest) {
   try {
-    const post = await prisma.post.findMany({
+    const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
+    const limit = parseInt(req.nextUrl.searchParams.get("limit") || "10");
+
+    const skip = (page - 1) * limit;
+
+    const totalPostsCount = await prisma.post.count({
+      where: { NOT: { type: "DRAFT" } },
+    });
+
+    const totalPages = Math.ceil(totalPostsCount / limit);
+
+    const posts = await prisma.post.findMany({
       where: { NOT: { type: "DRAFT" } },
       orderBy: {
         createdAt: "desc",
@@ -81,10 +92,14 @@ export async function GET(req: NextRequest) {
         saved: true,
         _count: { select: { comments: true } },
       },
-      take: 10,
+      skip,
+      take: limit,
     });
 
-    return NextResponse.json(post, { status: 200 });
+    return NextResponse.json(
+      { posts, totalPages, currentPage: page },
+      { status: 200 }
+    );
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
