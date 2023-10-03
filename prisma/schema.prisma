@@ -11,29 +11,30 @@ datasource db {
 }
 
 model User {
-  id                        String    @id @default(auto()) @map("_id") @db.ObjectId
+  id                        String      @id @default(auto()) @map("_id") @db.ObjectId
   name                      String
-  username                  String    @unique
-  email                     String    @unique
+  username                  String      @unique
+  email                     String      @unique
   password                  String
-  avatar                    String?   @default("https://res.cloudinary.com/dayo1mpv0/image/upload/v1683686792/default/profile.jpg")
-  bio                       String?   @default("")
-  site                      String    @default("")
+  avatar                    String?     @default("https://res.cloudinary.com/dayo1mpv0/image/upload/v1683686792/default/profile.jpg")
+  bio                       String?     @default("")
+  site                      String      @default("")
   posts                     Post[]
-  follower                  User[]    @relation("UserFollows", fields: [followerIDs], references: [id])
-  followerIDs               String[]  @db.ObjectId
-  following                 User[]    @relation("UserFollows", fields: [followingIDs], references: [id])
-  followingIDs              String[]  @db.ObjectId
-  followingTags             Tag[]     @relation(fields: [tagId], references: [id])
-  tagId                     String[]  @db.ObjectId
+  follower                  User[]      @relation("UserFollows", fields: [followerIDs], references: [id])
+  followerIDs               String[]    @db.ObjectId
+  following                 User[]      @relation("UserFollows", fields: [followingIDs], references: [id])
+  followingIDs              String[]    @db.ObjectId
+  followingTags             Tag[]       @relation(fields: [tagId], references: [id])
+  tagId                     String[]    @db.ObjectId
   forgotPasswordToken       String?
   forgotPasswordTokenExpiry DateTime?
   verifyToken               String?
   verifyTokenExpiry         DateTime?
-  createdAt                 DateTime  @default(now())
-  updatedAt                 DateTime  @updatedAt
+  createdAt                 DateTime    @default(now())
+  updatedAt                 DateTime    @updatedAt
   comment                   Comment[]
   replies                   Reply[]
+  saved                     SavedPost[]
 }
 
 enum PostType {
@@ -42,20 +43,30 @@ enum PostType {
 }
 
 model Post {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   path      String?
   image     String?
   content   Json?
-  author    User      @relation(fields: [authorId], references: [id])
-  authorId  String    @db.ObjectId
-  tags      Tag[]     @relation(fields: [tagId], references: [id])
-  tagId     String[]  @db.ObjectId
+  author    User        @relation(fields: [authorId], references: [id])
+  authorId  String      @db.ObjectId
+  tags      Tag[]       @relation(fields: [tagId], references: [id])
+  tagId     String[]    @db.ObjectId
   comments  Comment[]
-  views     Int       @default(0)
+  views     Int         @default(0)
   type      PostType
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  saved     SavedPost[]
+}
+
+model SavedPost {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String   @db.ObjectId
+  createdAt DateTime @default(now())
 }
 
 model Comment {

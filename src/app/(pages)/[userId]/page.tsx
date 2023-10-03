@@ -8,25 +8,20 @@ import { TUser } from "@/lib/types";
 import axios from "axios";
 import clsx from "clsx";
 import React from "react";
-import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
+import { notFound } from "next/navigation";
 
 const Page = ({ params }: { params: { userId: string } }) => {
   const { moreInfo } = useAppSelector((state) => state.user);
 
-  const { data, isLoading } = useQuery(["user", params.userId], {
+  const { data, isLoading, isError } = useQuery(["user", params.userId], {
     queryFn: async (): Promise<TUser | null> => {
       try {
         const { data } = await axios.get(`/api/users/${params.userId}`);
         return data;
       } catch (error: any) {
         console.log(error);
-        if (error.response.data) {
-          toast.error(error.response.statusText);
-          return null;
-        }
-        toast.error(error.message);
-        return null;
+        notFound();
       }
     },
     retry: 1,
@@ -38,6 +33,10 @@ const Page = ({ params }: { params: { userId: string } }) => {
         Loading...
       </div>
     );
+  }
+
+  if (isError) {
+    notFound();
   }
 
   return (

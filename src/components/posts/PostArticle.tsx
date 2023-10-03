@@ -10,8 +10,8 @@ import Image from "next/image";
 import React from "react";
 
 import Comments from "../comments/Comments";
-import Output from "editorjs-react-renderer";
 
+import Blocks from "editorjs-blocks-react-renderer";
 import moment from "moment";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import DeletePostModal from "./DeletePostModal";
@@ -82,7 +82,12 @@ const PostArticle = ({ post }: { post: TPost }) => {
           </h1>
         </header>
         <div className="prose">
-          <Output data={post.content} />
+          <Blocks
+            data={post.content}
+            renderers={{
+              checkList: Checklist,
+            }}
+          />
         </div>
       </article>
       <hr className="pb-8" />
@@ -101,3 +106,17 @@ const PostArticle = ({ post }: { post: TPost }) => {
 };
 
 export default PostArticle;
+
+const Checklist = ({ data, className = "my-2" }: any) => {
+  return (
+    <>
+      {data?.items.map((item: any, i: any) => (
+        <p key={i} className={className}>
+          <label>
+            <input type="checkbox" checked={item.checked} /> {item.text}
+          </label>
+        </p>
+      ))}
+    </>
+  );
+};

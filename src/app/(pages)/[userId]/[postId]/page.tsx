@@ -15,12 +15,16 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { setProgress } from "@/redux/commonSlice";
 
 type TPostProp = {
   params: { postId: string };
 };
 
 const Page = ({ params }: TPostProp) => {
+  const dispatch = useAppDispatch();
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["posts", params.postId],
     queryFn: async (): Promise<TPost> => {
@@ -28,13 +32,18 @@ const Page = ({ params }: TPostProp) => {
       return data;
     },
     retry: 1,
+    onSuccess: () => {
+      dispatch(setProgress(100));
+    },
   });
 
   if (isError) {
+    dispatch(setProgress(100));
     throw new Error("Oops something went wrong.");
   }
 
   if (isLoading) {
+    dispatch(setProgress(70));
     return (
       <div className="sm:h-[calc(100vh_-_100px)] h-[calc(100dvh_-_100px)] text-xl flex items-center justify-center">
         <div>Loading...</div>

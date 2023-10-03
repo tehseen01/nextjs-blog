@@ -3,6 +3,7 @@ import authSlice from "./authSlice";
 import editorSlice from "./editorSlice";
 import userSlice from "./userSlice";
 import dashboardSlice from "./dashboardSlice";
+import commonSlice from "./commonSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     user: userSlice,
     editor: editorSlice,
     dashboard: dashboardSlice,
+    common: commonSlice,
   },
 });
 
