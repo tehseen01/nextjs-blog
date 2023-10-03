@@ -28,6 +28,7 @@ export async function GET(
           where: { NOT: { type: "DRAFT" } },
           include: {
             _count: { select: { comments: true } },
+            saved: true,
             author: {
               select: {
                 id: true,
