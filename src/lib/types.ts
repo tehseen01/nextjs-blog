@@ -29,9 +29,18 @@ export type TPost = {
   comments: TComment[];
   createdAt: Date;
   updatedAt: Date;
+  saved: TSavedPost[];
   _count: {
     comments: number;
   };
+};
+
+export type TSavedPost = {
+  id: string;
+  userId: string;
+  postId: string;
+  createdAt: Date;
+  post: TPost;
 };
 
 export type TComment = {

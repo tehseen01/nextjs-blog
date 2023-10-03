@@ -78,6 +78,7 @@ export async function GET(req: NextRequest) {
             avatar: true,
           },
         },
+        saved: true,
         _count: { select: { comments: true } },
       },
       take: 10,

@@ -7,9 +7,13 @@ import { TPost } from "@/lib/types";
 import { Button, Skeleton } from "@nextui-org/react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { setProgress } from "@/redux/commonSlice";
 
 export default function Home() {
-  const { data, isLoading } = useQuery({
+  const dispatch = useAppDispatch();
+
+  const { data, isLoading, error } = useQuery({
     queryKey: ["posts"],
     queryFn: async (): Promise<TPost[]> => {
       try {
@@ -20,8 +24,15 @@ export default function Home() {
         return [];
       }
     },
+    onSuccess: () => {
+      dispatch(setProgress(100));
+    },
     refetchOnWindowFocus: false,
   });
+
+  if (isLoading) {
+    dispatch(setProgress(80));
+  }
 
   return (
     <div className="lg:p-6 md:p-4 py-2">
@@ -73,11 +84,13 @@ export default function Home() {
             </div>
           )}
           {/* ===POST CARD CONTENT=== */}
-          {data &&
-            data.length > 0 &&
+          {data && data.length > 0 ? (
             data.map((blogPost) => (
               <PostCard key={blogPost.id} post={blogPost} />
-            ))}
+            ))
+          ) : (
+            <div>Something went wrong please refresh the page!</div>
+          )}
         </main>
         <RightAside />
       </div>

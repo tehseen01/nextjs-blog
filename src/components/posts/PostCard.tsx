@@ -13,8 +13,33 @@ import Link from "next/link";
 import React from "react";
 import Icon from "../Icon";
 import { TPost } from "@/lib/types";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
+import { setProgress } from "@/redux/commonSlice";
+import { useQueryClient } from "@tanstack/react-query";
 
 const PostCard = ({ post }: { post: TPost }) => {
+  const dispatch = useAppDispatch();
+
+  const { authStatus, user } = useAppSelector((state) => state.auth);
+
+  const queryClient = useQueryClient();
+
+  async function handleSaveLetterPost(postID: string) {
+    try {
+      dispatch(setProgress(70));
+      const { data } = await axios.post("/api/posts/saved", { postID });
+      queryClient.invalidateQueries(["posts", "saved"]);
+      dispatch(setProgress(100));
+      toast.success(data.message);
+    } catch (error: any) {
+      dispatch(setProgress(100));
+      toast.error(error.message);
+      console.log(error);
+    }
+  }
+
   return (
     <article className="mb-2">
       <Card shadow="none" radius="sm" className="border">
@@ -80,13 +105,27 @@ const PostCard = ({ post }: { post: TPost }) => {
               <Icon name="message-circle" strokeWidth={1.25} />
               <span>
                 {post._count.comments}{" "}
-                <span className="max-sm:hidden">Comments</span>
+                <span className="max-sm:hidden transpa">Comments</span>
               </span>
             </Button>
           </div>
           <div>
-            <Button variant="light" isIconOnly>
-              <Icon name="bookmark" strokeWidth={1.25} />
+            <Button
+              variant="light"
+              isIconOnly
+              onPress={() => handleSaveLetterPost(post.id)}
+              isDisabled={!authStatus ? true : false}
+            >
+              <Icon
+                name="bookmark"
+                strokeWidth={1.25}
+                className={`${
+                  post.saved.some((id) => id.userId === user?.id) &&
+                  post.saved.some((id) => id.postId === post.id)
+                    ? "fill-black"
+                    : "fill-none"
+                }`}
+              />
             </Button>
           </div>
         </CardFooter>
