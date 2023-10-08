@@ -8,7 +8,11 @@ export const signUpSchema = z.object({
   username: z
     .string()
     .nonempty("Username is required")
-    .min(2, "username must me at least 2 characters"),
+    .min(2, "username must me at least 2 characters")
+    .regex(
+      /^[a-zA-Z0-9_]+$/,
+      "Username can only contain alphanumeric and underscores"
+    ),
   email: z
     .string()
     .nonempty("Email is required")
