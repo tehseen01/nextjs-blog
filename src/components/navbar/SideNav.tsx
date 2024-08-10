@@ -26,6 +26,9 @@ const SideNav = () => {
       <ul className="flex justify-between items-center">
         <li>
           <Button
+            as={Link}
+            href="https://github.com/tehseen01"
+            target="_blank"
             isIconOnly
             variant="light"
             color="primary"
@@ -36,6 +39,9 @@ const SideNav = () => {
         </li>
         <li>
           <Button
+            as={Link}
+            href="https://x.com/tehseen_type"
+            target="_blank"
             isIconOnly
             variant="light"
             color="primary"
@@ -46,6 +52,9 @@ const SideNav = () => {
         </li>
         <li>
           <Button
+            as={Link}
+            href="https://www.linkedin.com/in/tehseen01/"
+            target="_blank"
             isIconOnly
             variant="light"
             color="primary"
@@ -56,6 +65,9 @@ const SideNav = () => {
         </li>
         <li>
           <Button
+            as={Link}
+            href="https://www.instagram.com/tehseen.01/"
+            target="_blank"
             isIconOnly
             variant="light"
             color="primary"
