@@ -1,76 +1,26 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
-  --editor-content-h: 56px;
-  --editor-title-h: 80px;
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
-@layer components {
-  .mdx-h1 {
-    @apply mt-2 scroll-m-20 lg:text-5xl md:text-4xl text-3xl sm:font-extrabold font-semibold  tracking-tight;
-  }
-  .prose-h2 {
-    @apply text-3xl font-semibold tracking-tight my-3;
-  }
-  .mdx-h3 {
-    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
-  }
-  .mdx-h4 {
-    @apply scroll-m-20 text-xl font-semibold tracking-tight;
-  }
-  .mdx-h5 {
-    @apply scroll-m-20 text-lg font-semibold tracking-tight;
-  }
-  .mdx-h6 {
-    @apply scroll-m-20 text-base font-semibold tracking-tight;
-  }
-  .mdx-a {
-    @apply font-medium underline text-primary hover:text-primary-300;
-  }
-  .mdx-p {
-    @apply md:text-xl text-lg text-black mb-3;
-  }
-  .mdx-ul {
-    @apply my-6 ml-6 list-disc;
-  }
-  .mdx-ol {
-    @apply my-6 ml-6 list-decimal;
-  }
-  .mdx-li {
-    @apply mt-2;
-  }
-  .mdx-blockquote {
-    @apply mt-6 border-l-2 pl-6 italic;
-  }
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
 
-  .mdx-img {
-    @apply w-full;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
   }
-  .mdx-hr {
-    @apply my-4 md:my-8;
-  }
+}
 
-  .mdx-div {
-    @apply my-6 w-full overflow-y-auto;
-  }
-  .mdx-table {
-    @apply w-full;
-  }
-  .mdx-tr {
-    @apply m-0 border-t p-0;
-  }
-  .mdx-th {
-    @apply border px-4 py-2 text-left font-bold;
-  }
-  .mdx-td {
-    @apply border px-4 py-2 text-left;
-  }
-  .mdx-pre {
-    @apply mb-4 mt-6 overflow-x-auto rounded-lg border bg-black py-4;
-  }
-  .mdx-code {
-    @apply relative rounded border px-[0.3rem] py-[0.2rem] font-mono text-sm;
-  }
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
 }
